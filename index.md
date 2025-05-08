@@ -3,6 +3,7 @@
 - [Demo AI camera test](ai_camera_demo.html)
   - Capturing camera image
   - Using TensorFlow mode trained by Teachable Machine to get an result (A, B, C, or D)
+- [Demo online quiz](demo_quiz.html)
 - [Demo JSON question bank](questions_v1.json)
   - [View this JSON file in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Fquestions_v1.json)
   - Prompt to generate the demo question bank:
