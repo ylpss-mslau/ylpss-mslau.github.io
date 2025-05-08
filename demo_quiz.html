@@ -195,7 +195,7 @@
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
                 for (const optionKey in currentQuestion.options) {
                     const button = document.createElement('button');
-                    button.textContent = "${optionKey}: ${currentQuestion.options[optionKey]}`;
+                    button.textContent = `${optionKey}: ${currentQuestion.options[optionKey]}`;
                     button.dataset.optionKey = optionKey;
                     button.addEventListener('click', handleOptionClick);
                     optionsContainerElement.appendChild(button);
