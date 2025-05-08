@@ -1,10 +1,10 @@
 # AI Camera Quiz Demo
 
-- [Demo AI camera test](testing)
+- [Demo AI camera test](ai_camera_demo.html)
   - Capturing camera image
   - Using TensorFlow mode trained by Teachable Machine to get an result (A, B, C, or D)
-- [Demo JSON question bank](testing/questions_v1.json)
-  - [View this JSON file in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Ftesting%2Fquestions_v1.json)
+- [Demo JSON question bank](questions_v1.json)
+  - [View this JSON file in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Fquestions_v1.json)
   - Prompt to generate the demo question bank:
     ```
     Generate 30 MC questions for secondary 1 level students in Hong Kong to learn the use of prepositions.
