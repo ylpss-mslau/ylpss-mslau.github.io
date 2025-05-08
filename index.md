@@ -8,8 +8,7 @@
   - It fetches question bank in JSON format via a URL.
   - It shows 10 random questions and let the user answers.
   - At the end, it shows the final score.
-- [Demo JSON question bank](questions_v1.json)
-  - [View this JSON file in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Fquestions_v1.json)
+- [Demo JSON question bank](questions_v1.json) ([View in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Fquestions_v1.json))
   - Prompt to generate the demo question bank:
     ```
     Generate 30 MC questions for secondary 1 level students in Hong Kong to learn the use of prepositions.
