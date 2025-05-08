@@ -6,7 +6,7 @@
 - [Demo online quiz](demo_quiz.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/demo_quiz.html))
   - Showing the basic idea of the game without AI camera
   - It fetches question bank in JSON format via a URL.
-  - It shows 10 random questions and let the user answers.
+  - It shows 10 random questions and the user can answer.
   - At the end, it shows the final score.
 - [Demo JSON question bank](questions_v1.json) ([View in onine editor](https://jsoneditoronline.org/#left=url.https%3A%2F%2Fylpss-mslau.github.io%2Fquestions_v1.json))
   - Prompt to generate the demo question bank:
