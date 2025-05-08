@@ -188,14 +188,14 @@
             }
 
             const currentQuestion = selectedQuestions[currentQuestionIndex];
-            questionTextElement.textContent = `${currentQuestionIndex}. ${currentQuestion.question}";
+            questionTextElement.textContent = `${currentQuestionIndex}. ${currentQuestion.question}`;
             optionsContainerElement.innerHTML = ''; // Clear previous options
 
             // Ensure options exist and is an object
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
                 for (const optionKey in currentQuestion.options) {
                     const button = document.createElement('button');
-                    button.textContent = `${optionKey}: ${currentQuestion.options[optionKey]}`;
+                    button.textContent = "${optionKey}: ${currentQuestion.options[optionKey]}`;
                     button.dataset.optionKey = optionKey;
                     button.addEventListener('click', handleOptionClick);
                     optionsContainerElement.appendChild(button);
