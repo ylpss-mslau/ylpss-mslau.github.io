@@ -188,7 +188,7 @@
             }
 
             const currentQuestion = selectedQuestions[currentQuestionIndex];
-            questionTextElement.textContent = `${currentQuestionIndex}. ${currentQuestion.question}`;
+            questionTextElement.textContent = `${currentQuestionIndex+1}. ${currentQuestion.question}`;
             optionsContainerElement.innerHTML = ''; // Clear previous options
 
             // Ensure options exist and is an object
