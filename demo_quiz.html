@@ -21,11 +21,13 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 90%;
             max-width: 600px;
+            text-align: center; /* Center content like buttons */
         }
         #question-text {
             font-size: 1.2em;
             margin-bottom: 20px;
             min-height: 50px; /* Ensure space even if question is short */
+            text-align: left; /* Align question text to the left */
         }
         #options-container button {
             display: block;
@@ -38,6 +40,7 @@
             cursor: pointer;
             font-size: 1em;
             transition: background-color 0.3s;
+            text-align: left; /* Align option text to the left */
         }
         #options-container button:hover {
             background-color: #e9e9e9;
@@ -64,8 +67,10 @@
         #feedback-message.wrong {
             color: red;
         }
-        #action-button, #restart-button {
-            display: none; /* Initially hidden */
+
+        /* Styles for the main action button (Next/Check Score) */
+        #action-button {
+            display: none; /* Initially hidden, JS controls visibility */
             padding: 10px 20px;
             margin-top: 15px;
             background-color: #007bff;
@@ -75,9 +80,28 @@
             cursor: pointer;
             font-size: 1em;
         }
-        #action-button:hover, #restart-button:hover {
+
+        /* Styles for the restart button (Play Again?) */
+        #restart-button {
+            /* This button is part of score-container, so it's shown when score-container is shown.
+               No 'display: none;' here by default. */
+            padding: 10px 20px;
+            margin-top: 15px;
+            background-color: #28a745; /* Green color for restart */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        #action-button:hover {
             background-color: #0056b3;
         }
+        #restart-button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
         #score-container {
             margin-top: 20px;
             font-size: 1.5em;
@@ -85,6 +109,7 @@
         }
         #final-score {
             text-align: center;
+            margin-bottom: 15px; /* Add some space before the restart button */
         }
         .hidden {
             display: none !important;
@@ -97,8 +122,7 @@
         <div id="question-text">Loading question...</div>
         <div id="options-container"></div>
         <div id="feedback-message"></div>
-        <button id="action-button">Next</button>
-        <div id="score-container" class="hidden">
+        <button id="action-button">Next</button> <div id="score-container" class="hidden">
             <h2>Quiz Completed!</h2>
             <p id="final-score"></p>
             <button id="restart-button" onclick="restartGame()">Play Again?</button>
@@ -113,64 +137,73 @@
         let score = 0;
         const questionsPerGame = 10;
 
+        // DOM Element References
         const questionTextElement = document.getElementById('question-text');
         const optionsContainerElement = document.getElementById('options-container');
         const feedbackMessageElement = document.getElementById('feedback-message');
-        const actionButtonElement = document.getElementById('action-button'); // Updated ID
+        const actionButtonElement = document.getElementById('action-button'); // Next/Check Score button
         const scoreContainerElement = document.getElementById('score-container');
         const finalScoreElement = document.getElementById('final-score');
-        //const quizContainerElement = document.getElementById('quiz-container');
-        const restartButtonElement = document.getElementById('restart-button');
+        // const quizContainerElement = document.getElementById('quiz-container'); // Not explicitly used after selection
 
+        /**
+         * Fetches questions from the JSON URL.
+         */
         async function fetchQuestions() {
             try {
                 questionTextElement.textContent = "Fetching questions...";
-                actionButtonElement.style.display = 'none';
-                restartButtonElement.style.display = 'none';
+                actionButtonElement.style.display = 'none'; // Hide button during fetch
                 const response = await fetch(jsonUrl);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 allQuestions = await response.json();
                 if (!Array.isArray(allQuestions) || allQuestions.length === 0) {
-                     questionTextElement.textContent = "No questions found or data is not in expected format.";
-                     console.error("Fetched data:", allQuestions);
+                    questionTextElement.textContent = "No questions found or data is not in the expected format.";
+                    console.error("Fetched data:", allQuestions);
                     return;
                 }
-                startGame();
+                startGame(); // Start the game once questions are fetched
             } catch (error) {
-                questionTextElement.textContent = `Error loading questions: ${error.message}`;
+                questionTextElement.textContent = `Error loading questions: ${error.message}. Please try refreshing.`;
                 console.error("Failed to fetch questions:", error);
             }
         }
 
+        /**
+         * Shuffles an array in place.
+         * @param {Array} array - The array to shuffle.
+         */
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+                [array[i], array[j]] = [array[j], array[i]]; // ES6 swap
             }
         }
 
+        /**
+         * Initializes or resets the game state.
+         */
         function startGame() {
             score = 0;
             currentQuestionIndex = 0;
             selectedQuestions = [];
             feedbackMessageElement.textContent = '';
-            actionButtonElement.style.display = 'none';
-            restartButtonElement.style.display = 'none';
+            feedbackMessageElement.className = ''; // Clear feedback styling
+            actionButtonElement.style.display = 'none'; // Hide action button at start
             actionButtonElement.onclick = null; // Clear any previous onclick handler
-            scoreContainerElement.classList.add('hidden');
-            questionTextElement.classList.remove('hidden');
-            optionsContainerElement.classList.remove('hidden');
-
+            scoreContainerElement.classList.add('hidden'); // Hide score section
+            questionTextElement.classList.remove('hidden'); // Show question section
+            optionsContainerElement.classList.remove('hidden'); // Show options section
 
             if (allQuestions.length === 0) {
                 questionTextElement.textContent = "No questions available to start the game.";
                 return;
             }
             
-            const questionsToSelect = Math.min(allQuestions.length, questionsPerGame);
+            // Shuffle all questions and select a subset for the game
             shuffleArray(allQuestions);
+            const questionsToSelect = Math.min(allQuestions.length, questionsPerGame);
             selectedQuestions = allQuestions.slice(0, questionsToSelect);
             
             if (selectedQuestions.length > 0) {
@@ -180,59 +213,71 @@
             }
         }
 
+        /**
+         * Displays the current question and its options.
+         */
         function displayQuestion() {
-            feedbackMessageElement.textContent = '';
-            actionButtonElement.style.display = 'none';
-            actionButtonElement.onclick = null; // Clear handler before setting a new one or none
+            feedbackMessageElement.textContent = ''; // Clear previous feedback
+            feedbackMessageElement.className = '';
+            actionButtonElement.style.display = 'none'; // Hide action button until an option is clicked
+            actionButtonElement.onclick = null; 
 
             if (currentQuestionIndex >= selectedQuestions.length) {
-                endGame(); // Should not happen if logic is correct, but as a safeguard
+                // This case should ideally be handled by the logic in handleOptionClick leading to endGame
+                console.warn("displayQuestion called when no more questions are available. Ending game.");
+                endGame(); 
                 return;
             }
 
             const currentQuestion = selectedQuestions[currentQuestionIndex];
-            questionTextElement.textContent = `${currentQuestionIndex+1}. ${currentQuestion.question}`;
+            // Display question number (1-based index)
+            questionTextElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}: ${currentQuestion.question}`;
             optionsContainerElement.innerHTML = ''; // Clear previous options
 
-            // Ensure options exist and is an object
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
-                for (const optionKey in currentQuestion.options) {
+                Object.entries(currentQuestion.options).forEach(([key, value]) => {
                     const button = document.createElement('button');
-                    button.textContent = `${optionKey}: ${currentQuestion.options[optionKey]}`;
-                    button.dataset.optionKey = optionKey;
+                    button.textContent = `${key}: ${value}`;
+                    button.dataset.optionKey = key; // Store option key (A, B, C, D)
                     button.addEventListener('click', handleOptionClick);
                     optionsContainerElement.appendChild(button);
-                }
+                });
             } else {
-                questionTextElement.textContent = `Error: Question ${currentQuestionIndex + 1} has no options.`;
-                // Optionally, skip this question or end game
+                questionTextElement.textContent = `Error: Question ${currentQuestionIndex + 1} has invalid or no options.`;
+                console.error("Invalid options for question:", currentQuestion);
+                // Skip to next question or end game if this occurs
                 if (currentQuestionIndex >= selectedQuestions.length - 1) {
                     endGame();
                 } else {
                     currentQuestionIndex++;
-                    setTimeout(displayQuestion, 1000); // Move to next question after a delay
+                    // Use a small delay to allow user to see the error message if needed
+                    setTimeout(displayQuestion, 1500); 
                 }
                 return;
             }
-            enableOptionButtons(true);
+            enableOptionButtons(true); // Make sure option buttons are enabled
         }
 
+        /**
+         * Handles the click event on an answer option.
+         * @param {Event} event - The click event.
+         */
         function handleOptionClick(event) {
             const selectedButton = event.target;
             const selectedOptionKey = selectedButton.dataset.optionKey;
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             const correctAnswerKey = currentQuestion.correct_answer;
 
-            enableOptionButtons(false); // Disable buttons after an answer
+            enableOptionButtons(false); // Disable all option buttons after selection
 
             if (selectedOptionKey === correctAnswerKey) {
                 score++;
                 feedbackMessageElement.textContent = 'Correct!';
-                feedbackMessageElement.className = 'correct';
+                feedbackMessageElement.className = 'correct'; // Add class for styling
                 selectedButton.classList.add('correct');
             } else {
                 feedbackMessageElement.textContent = 'Wrong!';
-                feedbackMessageElement.className = 'wrong';
+                feedbackMessageElement.className = 'wrong'; // Add class for styling
                 selectedButton.classList.add('wrong');
                 // Highlight the correct answer
                 const correctButton = optionsContainerElement.querySelector(`button[data-option-key="${correctAnswerKey}"]`);
@@ -241,58 +286,70 @@
                 }
             }
 
-            // Check if it's the last question
+            // Configure the action button (Next Question or Check Score)
             if (currentQuestionIndex >= selectedQuestions.length - 1) {
-                // This is the last question. The "correct" or "wrong" message is already set.
+                // This is the last question
                 actionButtonElement.textContent = 'Check Score';
-                actionButtonElement.onclick = endGame; // Assign endGame directly
-                actionButtonElement.style.display = 'block';
+                actionButtonElement.onclick = endGame; // Set to call endGame
             } else {
-                // Not the last question, set up "Next Question" button
+                // There are more questions
                 actionButtonElement.textContent = 'Next Question';
                 actionButtonElement.onclick = () => {
                     currentQuestionIndex++;
-                    displayQuestion(); // This will hide the button again and set up the new Q
+                    displayQuestion(); 
                 };
-                actionButtonElement.style.display = 'block';
             }
+            actionButtonElement.style.display = 'block'; // Show the action button
         }
 
+        /**
+         * Enables or disables all option buttons.
+         * @param {boolean} enable - True to enable, false to disable.
+         */
         function enableOptionButtons(enable) {
             const buttons = optionsContainerElement.getElementsByTagName('button');
             for (let button of buttons) {
                 button.disabled = !enable;
                 if (enable) {
+                    // Clear styling when re-enabling for a new question
                     button.classList.remove('correct', 'wrong');
                 }
             }
         }
 
+        /**
+         * Ends the game and displays the final score.
+         */
         function endGame() {
-            questionTextElement.classList.add('hidden');
-            optionsContainerElement.classList.add('hidden');
-            feedbackMessageElement.textContent = ''; // Clear feedback before showing score
-            actionButtonElement.style.display = 'none';
-            actionButtonElement.onclick = null;
+            questionTextElement.classList.add('hidden'); // Hide question area
+            optionsContainerElement.classList.add('hidden'); // Hide options area
+            feedbackMessageElement.textContent = ''; // Clear any lingering feedback
+            feedbackMessageElement.className = '';
+            actionButtonElement.style.display = 'none'; // Hide the "Next/Check Score" button
+            actionButtonElement.onclick = null; // Clear its handler
 
             finalScoreElement.textContent = `Your final score is: ${score} out of ${selectedQuestions.length}.`;
-            scoreContainerElement.classList.remove('hidden');
-            restartButtonElement.style.display = 'block'; 
+            scoreContainerElement.classList.remove('hidden'); // Show the score container (which includes the restart button)
         }
 
+        /**
+         * Restarts the game.
+         */
         function restartGame() {
-            scoreContainerElement.classList.add('hidden');
-            questionTextElement.classList.remove('hidden');
-            optionsContainerElement.classList.remove('hidden');
-            // Re-fetch or re-use fetched questions for a new game
+            scoreContainerElement.classList.add('hidden'); // Hide score section
+            // Other elements (question, options) will be shown by startGame
+            
+            // Re-initialize and start the game
+            // If questions were already fetched, startGame will reuse them (after shuffling)
+            // If fetch failed or allQuestions is empty, try fetching again.
             if (allQuestions.length > 0) {
                  startGame();
             } else {
-                fetchQuestions(); // In case initial fetch failed or no questions were available
+                 fetchQuestions(); 
             }
         }
 
-        // Start the game when the page loads
+        // Initial call to fetch questions and start the game when the page loads
         fetchQuestions();
     </script>
 
