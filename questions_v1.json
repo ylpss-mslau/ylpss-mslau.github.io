@@ -1,0 +1,302 @@
+[
+  {
+    "question": "My birthday is ______ June.",
+    "options": {
+      "A": "at",
+      "B": "on",
+      "C": "in",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "We have an English lesson ______ Monday morning.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "with"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The school assembly starts ______ 8:00 AM.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "by",
+      "D": "at"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question": "The cat is sleeping ______ the chair.",
+    "options": {
+      "A": "under",
+      "B": "over",
+      "C": "through",
+      "D": "to"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "Please put the books ______ the shelf.",
+    "options": {
+      "A": "at",
+      "B": "on",
+      "C": "in",
+      "D": "under"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "My family lives ______ Tuen Mun.",
+    "options": {
+      "A": "at",
+      "B": "on",
+      "C": "in",
+      "D": "from"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "Let's meet ______ the school gate.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "to"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "I usually go to school ______ MTR.",
+    "options": {
+      "A": "with",
+      "B": "by",
+      "C": "on",
+      "D": "in"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "She walked ______ the park to get home.",
+    "options": {
+      "A": "through",
+      "B": "under",
+      "C": "over",
+      "D": "on"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "He received a letter ______ his friend in Canada.",
+    "options": {
+      "A": "to",
+      "B": "by",
+      "C": "with",
+      "D": "from"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question": "Can you cut the paper ______ these scissors?",
+    "options": {
+      "A": "by",
+      "B": "from",
+      "C": "with",
+      "D": "about"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "This present is ______ my teacher.",
+    "options": {
+      "A": "to",
+      "B": "for",
+      "C": "at",
+      "D": "with"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The library is ______ the computer room.",
+    "options": {
+      "A": "between",
+      "B": "among",
+      "C": "next to",
+      "D": "under"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "Peter sits ______ Mary and Tom.",
+    "options": {
+      "A": "among",
+      "B": "next to",
+      "C": "between",
+      "D": "near"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "Don't talk ______ the lesson.",
+    "options": {
+      "A": "while",
+      "B": "during",
+      "C": "for",
+      "D": "since"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "We have lunch ______ noon.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "Look ______ the beautiful rainbow in the sky!",
+    "options": {
+      "A": "on",
+      "B": "at",
+      "C": "in",
+      "D": "to"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The airplane flew ______ the clouds.",
+    "options": {
+      "A": "under",
+      "B": "below",
+      "C": "above",
+      "D": "into"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "He jumped ______ the swimming pool.",
+    "options": {
+      "A": "on",
+      "B": "at",
+      "C": "to",
+      "D": "into"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question": "I like talking ______ my classmates.",
+    "options": {
+      "A": "with",
+      "B": "by",
+      "C": "for",
+      "D": "from"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The teacher stood ______ the class.",
+    "options": {
+      "A": "behind",
+      "B": "under",
+      "C": "in front of",
+      "D": "next to"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "We learned ______ dinosaurs in science class.",
+    "options": {
+      "A": "for",
+      "B": "with",
+      "C": "about",
+      "D": "from"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "My house is ______ the post office.",
+    "options": {
+      "A": "between",
+      "B": "near",
+      "C": "through",
+      "D": "under"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "I always wash my hands ______ eating.",
+    "options": {
+      "A": "after",
+      "B": "before",
+      "C": "during",
+      "D": "while"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "Can you find your keys ______ your bag?",
+    "options": {
+      "A": "on",
+      "B": "at",
+      "C": "in",
+      "D": "under"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The dog ran ______ the field.",
+    "options": {
+      "A": "across",
+      "B": "under",
+      "C": "into",
+      "D": "onto"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She waited ______ the bus ______ an hour.",
+    "options": {
+      "A": "at / during",
+      "B": "for / for",
+      "C": "to / since",
+      "D": "on / while"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The bird flew out ______ the cage.",
+    "options": {
+      "A": "in",
+      "B": "from",
+      "C": "of",
+      "D": "on"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The shop is open ______ 9 am to 9 pm.",
+    "options": {
+      "A": "at",
+      "B": "since",
+      "C": "by",
+      "D": "from"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question": "He is good ______ playing the piano.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "with"
+    },
+    "correct_answer": "C"
+  }
+]
