@@ -64,7 +64,7 @@
         #feedback-message.wrong {
             color: red;
         }
-        #action-button { /* Renamed from next-question-button for clarity */
+        #action-button, #restart-button {
             display: none; /* Initially hidden */
             padding: 10px 20px;
             margin-top: 15px;
@@ -101,7 +101,7 @@
         <div id="score-container" class="hidden">
             <h2>Quiz Completed! Good Job!</h2>
             <p id="final-score"></p>
-            <button onclick="restartGame()">Play Again?</button>
+            <button id="restart-button" onclick="restartGame()">Play Again?</button>
         </div>
     </div>
 
