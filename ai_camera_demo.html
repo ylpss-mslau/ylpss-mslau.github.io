@@ -88,7 +88,7 @@
             if (prediction[i].probability > highest) {
                 result = prediction[i];
                 highest = prediction[i].probability;
-                console.log("Highest: " + result.className + " ("+ result.probability + ")");
+                console.log("Highest: " + result.className + " ("+ result.probability + ") " + (result.probability>=0.8?"👌🏻":"👎🏻"));
             }
         }
         resultContainer = document.getElementById('result-container');
