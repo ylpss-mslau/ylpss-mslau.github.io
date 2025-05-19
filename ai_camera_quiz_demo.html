@@ -88,7 +88,7 @@
             background-color: #fff;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 30px 20px 5px; /* Further reduced bottom padding from 10px to 5px */
+            padding: 30px 20px 5px; /* Further reduced bottom padding */
             margin-bottom: 20px;
             width: clamp(600px, 80vw, 800px); /* Responsive width */
             height: clamp(150px, 20vh, 180px); /* Taller question box */
@@ -147,7 +147,7 @@
         #option-C { top: 50%; right: 0; transform: translateY(-50%); background: linear-gradient(45deg, #ffd740, #ffeb3b); } /* Yellow gradient */
         #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #66bb6a, #81c784); } /* Green gradient */
         .option-button.detected {
-            animation: flashDetected 0.3s infinite alternate; /* Faster flashing (0.3s) */
+            animation: flashDetected 0.3s infinite alternate; /* Faster flashing */
         }
         @keyframes flashDetected {
             0% { background-color: #ffffff; border: 4px solid #800080; color: #333; } /* White background, purple border */
@@ -522,18 +522,18 @@
 
         function startTimer() {
             clearInterval(timerInterval);
-            let timeLeft = 5; // Start at 5
+            let timeLeft = 5;
             timeCounterElement.textContent = `Time: ${timeLeft}`;
             let optionsShown = false;
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timeCounterElement.textContent = `Time: ${timeLeft}`;
-                if (timeLeft === 4 && !optionsShown) { // Show options at 4
+                if (timeLeft === 4 && !optionsShown) {
                     optionsAreaElement.style.display = 'block';
-                    classificationStarted = true; // Start camera detection
+                    classificationStarted = true;
                     optionsShown = true;
                 }
-                if (timeLeft <= 0) { // Confirm option at 0
+                if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     if (!answerConfirmed) {
                         const detectedButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
@@ -650,7 +650,10 @@
             optionsAreaElement.classList.add('hidden');
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
-            finalScoreElement.textContent = `Your final score is: ${totalScore}.`;
+            timeCounterElement.classList.add('hidden'); // Hide counter when quiz is complete
+            finalScoreElement.textContent = `Your final score is: ${totalScore}`; // Omit full stop
+            finalScoreElement.style.fontSize = 'clamp(3.5rem, 7vw, 5rem)'; // Much bigger font (~80px max)
+            finalScoreElement.style.marginTop = '20px'; // Move to next line
             scoreContainerElement.classList.remove('hidden');
             setTimeout(() => {
                 scoreContainerElement.classList.add('visible');
@@ -665,6 +668,10 @@
 
         function restartGame() {
             webcamContainer.innerHTML = ''; // Remove previous canvas
+            timeCounterElement.classList.remove('hidden'); // Show counter on restart
+            finalScoreElement.textContent = ''; // Clear final score
+            finalScoreElement.style.fontSize = ''; // Reset font size
+            finalScoreElement.style.marginTop = ''; // Reset margin
             startGame();
             scoreContainerElement.classList.add('hidden');
         }
