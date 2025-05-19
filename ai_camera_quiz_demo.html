@@ -67,19 +67,21 @@
             flex-direction: column;
             overflow-y: auto;
         }
+        #webcam-confidence-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
         #webcam-container {
             width: 200px;
             height: 200px;
             border: 2px solid #333;
             border-radius: 8px;
-            margin-bottom: 10px;
-            align-self: flex-end;
+            margin-right: 10px;
         }
         #confidence-container {
             width: 200px;
-            margin-bottom: 20px;
-            align-self: flex-end;
-            font-size: 1.25rem; /* ~20px, smaller for readability */
+            font-size: 1.25rem; /* ~20px */
         }
         #confidence-container div {
             margin-bottom: 5px;
@@ -92,7 +94,7 @@
             background-color: #fff;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 30px 20px; /* Increased top/bottom padding */
+            padding: 30px 20px;
             margin-bottom: 20px;
             width: 800px;
             height: 120px;
@@ -140,10 +142,10 @@
             align-items: center;
             justify-content: center;
         }
-        #option-A { top: 0; left: 125px; background-color: #d1e7dd; }
-        #option-B { right: 0; top: 170px; background-color: #f8d7da; }
-        #option-C { bottom: 0; left: 125px; background-color: #cff4fc; }
-        #option-D { left: 0; top: 170px; background-color: #fff3cd; }
+        #option-A { top: 50%; transform: translateY(-50%); left: 125px; background-color: #d1e7dd; }
+        #option-B { top: 25%; left: 0; background-color: #f8d7da; }
+        #option-C { top: 75%; right: 0; background-color: #cff4fc; }
+        #option-D { bottom: 50%; transform: translateY(50%); left: 125px; background-color: #fff3cd; }
         .option-button.correct {
             background-color: #d4edda !important;
             color: #155724;
@@ -232,17 +234,19 @@
                 <div id="score-container" class="hidden">
                     <h2>Quiz Completed!</h2>
                     <p id="final-score"></p>
-                    <button id="restart-button">Play Again?</button>
+                    <button id="restart-button" onclick="restartGame()">Play Again?</button>
                 </div>
             </div>
         </div>
         <div id="right-pane">
-            <div id="webcam-container"></div>
-            <div id="confidence-container">
-                <div id="confidence-A">A: 0.00%</div>
-                <div id="confidence-B">B: 0.00%</div>
-                <div id="confidence-C">C: 0.00%</div>
-                <div id="confidence-D">D: 0.00%</div>
+            <div id="webcam-confidence-container">
+                <div id="webcam-container"></div>
+                <div id="confidence-container">
+                    <div id="confidence-A">A: 0.00%</div>
+                    <div id="confidence-B">B: 0.00%</div>
+                    <div id="confidence-C">C: 0.00%</div>
+                    <div id="confidence-D">D: 0.00%</div>
+                </div>
             </div>
             <div id="dashboard-container">
                 <h2>Score Dashboard</h2>
@@ -262,7 +266,7 @@
     <div id="label-container" style="display: none;"></div>
 
     <script>
-        const URL = 'https://teachablemachine.withgoogle.com/models/aRF8zs-zU/';
+        const URL = 'https://teachablemachine.withgoogle.com/models/HUm1gixqh/';
         const jsonUrl = 'https://ylpss-mslau.github.io/questions_v1.json';
         let model, webcam, labelContainer, maxPredictions;
         let allQuestions = [], selectedQuestions = [];
@@ -541,6 +545,11 @@
             finalScoreElement.textContent = `Your final score is: ${totalScore}.`;
             scoreContainerElement.classList.remove('hidden');
             restartButtonElement.style.display = 'block';
+        }
+
+        function restartGame() {
+            startGame();
+            scoreContainerElement.classList.add('hidden');
         }
 
         // Start by fetching questions
