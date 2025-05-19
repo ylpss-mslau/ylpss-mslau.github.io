@@ -6,6 +6,7 @@
     <title>Camera Quiz Game</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -132,20 +133,20 @@
             font-weight: bold;
         }
         #options-area {
-            width: 400px;
+            width: 500px; /* Increased from 400px to prevent overlap */
             height: 400px;
             position: relative;
             margin: 20px auto;
         }
         .option-button {
             position: absolute;
-            width: 180px; /* Increased from 150px */
-            height: 80px; /* Increased from 60px */
+            width: 180px;
+            height: 80px;
             padding: 10px;
-            border: 4px solid transparent; /* Thicker transparent border */
-            border-radius: 8px; /* Slightly larger radius for larger box */
+            border: 4px solid transparent;
+            border-radius: 8px;
             cursor: default;
-            font-size: 1.875rem; /* ~30px, increased from ~25px */
+            font-size: 1.875rem; /* ~30px */
             text-align: center;
             display: flex;
             align-items: center;
@@ -237,6 +238,20 @@
             text-align: center;
         }
         .hidden { display: none !important; }
+        .blackout {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            opacity: 1;
+            z-index: 1000;
+            transition: opacity 1s ease;
+        }
+        .blackout.fade-out {
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -286,6 +301,7 @@
             </div>
         </div>
     </div>
+    <div id="blackout" class="blackout hidden"></div>
     <div id="label-container" style="display: none;"></div>
 
     <script>
@@ -322,6 +338,7 @@
             C: document.getElementById('confidence-C'),
             D: document.getElementById('confidence-D')
         };
+        const blackoutElement = document.getElementById('blackout');
 
         // Webcam Initialization
         async function initWebcam() {
@@ -510,34 +527,42 @@
                 return;
             }
 
-            const currentQuestion = selectedQuestions[currentQuestionIndex];
-            questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}`;
-            questionTextElement.textContent = currentQuestion.question;
-            questionBoxElement.classList.remove('visible'); // Reset transition
+            // Blackout transition
+            blackoutElement.classList.remove('hidden', 'fade-out');
             setTimeout(() => {
-                questionBoxElement.classList.add('visible'); // Trigger transition
-            }, 10); // Small delay to ensure transition triggers
-            startTimer();
-
-            if (currentQuestion.options && typeof currentQuestion.options === 'object') {
-                Object.entries(currentQuestion.options).forEach(([key, value]) => {
-                    const button = document.createElement('div');
-                    button.className = 'option-button';
-                    button.id = `option-${key}`;
-                    button.textContent = `${key}: ${value}`;
-                    button.dataset.optionKey = key;
-                    optionsAreaElement.appendChild(button);
-                });
-            } else {
-                questionTextElement.textContent = `Error: Question ${currentQuestionIndex + 1} has no options.`;
+                blackoutElement.classList.add('fade-out');
                 setTimeout(() => {
-                    currentQuestionIndex++;
-                    displayQuestion();
-                }, 1500);
-                return;
-            }
+                    blackoutElement.classList.add('hidden');
+                    const currentQuestion = selectedQuestions[currentQuestionIndex];
+                    questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}`;
+                    questionTextElement.textContent = currentQuestion.question;
+                    questionBoxElement.classList.remove('visible');
+                    setTimeout(() => {
+                        questionBoxElement.classList.add('visible');
+                    }, 10);
+                    startTimer();
 
-            questionStartTime = Date.now();
+                    if (currentQuestion.options && typeof currentQuestion.options === 'object') {
+                        Object.entries(currentQuestion.options).forEach(([key, value]) => {
+                            const button = document.createElement('div');
+                            button.className = 'option-button';
+                            button.id = `option-${key}`;
+                            button.textContent = `${key}: ${value}`;
+                            button.dataset.optionKey = key;
+                            optionsAreaElement.appendChild(button);
+                        });
+                    } else {
+                        questionTextElement.textContent = `Error: Question ${currentQuestionIndex + 1} has no options.`;
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            displayQuestion();
+                        }, 1500);
+                        return;
+                    }
+
+                    questionStartTime = Date.now();
+                }, 1000); // 1s blackout
+            }, 10);
         }
 
         function handleAnswer(selectedOption) {
@@ -563,7 +588,7 @@
             }
 
             updateDashboard();
-            setTimeout(moveToNextQuestion, 3500); // Increased from 1s to 3.5s
+            setTimeout(moveToNextQuestion, 3500); // 3.5s feedback display
         }
 
         function moveToNextQuestion() {
@@ -590,8 +615,14 @@
             finalScoreElement.textContent = `Your final score is: ${totalScore}.`;
             scoreContainerElement.classList.remove('hidden');
             setTimeout(() => {
-                scoreContainerElement.classList.add('visible'); // Trigger result transition
-            }, 10); // Small delay to ensure transition triggers
+                scoreContainerElement.classList.add('visible');
+                // Trigger firework animation
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }, 10);
             restartButtonElement.style.display = 'block';
         }
 
