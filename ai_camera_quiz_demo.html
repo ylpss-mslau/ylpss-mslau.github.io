@@ -71,25 +71,12 @@
             overflow-y: auto;
             min-width: 250px; /* Ensure right pane doesn't collapse too much */
         }
-        #webcam-confidence-container {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-        }
         #webcam-container {
             width: clamp(150px, 20vw, 200px); /* Responsive webcam size */
             height: clamp(150px, 20vw, 200px);
             border: 2px solid #333;
             border-radius: 8px;
-            margin-right: 10px;
-        }
-        #confidence-container {
-            width: clamp(150px, 20vw, 200px);
-            font-size: clamp(1rem, 2vw, 1.25rem); /* Responsive font size, ~20px max */
-        }
-        #confidence-container div {
-            margin-bottom: 5px;
+            margin-bottom: 20px;
         }
         #dashboard-container {
             flex: 1;
@@ -102,13 +89,12 @@
             padding: 30px 20px;
             margin-bottom: 20px;
             width: clamp(600px, 80vw, 800px); /* Responsive width */
-            height: clamp(100px, 15vh, 120px); /* Responsive height */
+            height: clamp(150px, 20vh, 180px); /* Taller question box */
             position: relative;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             align-items: center;
-            gap: 1.5em; /* At least 1 line of spacing between question content and timer */
+            gap: 1.5em; /* Spacing between elements */
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 1s ease, transform 1s ease;
@@ -131,6 +117,7 @@
             font-size: clamp(1.5rem, 3vw, 1.875rem); /* Responsive font size, ~30px max */
             color: #721c24;
             font-weight: bold;
+            margin-top: 20px; /* Outside question box */
         }
         #options-area {
             width: clamp(600px, 70vw, 700px); /* Widened to prevent overlap */
@@ -151,18 +138,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: border 0.3s ease;
+            transition: background-color 0.3s ease;
         }
         #option-A { top: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #ff6f61, #ff9f84); } /* Coral gradient */
         #option-B { top: 50%; left: 0; transform: translateY(-50%); background: linear-gradient(45deg, #40c4ff, #80deea); } /* Sky blue gradient */
         #option-C { top: 50%; right: 0; transform: translateY(-50%); background: linear-gradient(45deg, #ffd740, #ffeb3b); } /* Yellow gradient */
         #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #66bb6a, #81c784); } /* Green gradient */
         .option-button.detected {
-            animation: flashCyan 0.5s infinite alternate; /* Fast flashing cyan border */
+            animation: flashWhite 0.5s infinite alternate; /* Flash entire box with white background */
         }
-        @keyframes flashCyan {
-            0% { border: 4px solid #00ffff; } /* Cyan */
-            100% { border: 4px solid transparent; }
+        @keyframes flashWhite {
+            0% { background-color: #ffffff; color: #333; } /* White background, readable text */
+            100% { background-color: transparent; color: #333; }
         }
         .option-button.correct {
             background: linear-gradient(45deg, #d4edda, #c3e6cb) !important;
@@ -242,6 +229,19 @@
             font-weight: bold;
             text-align: center;
         }
+        #confidence-container {
+            width: 100%;
+            font-size: clamp(1rem, 2vw, 1.25rem); /* Responsive font size, ~20px max */
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            margin: 0;
+        }
+        #confidence-container div {
+            margin: 0 5px;
+        }
         .hidden { display: none !important; }
         .blackout {
             position: fixed;
@@ -277,6 +277,10 @@
             #webcam-confidence-container {
                 justify-content: center;
             }
+            #confidence-container {
+                position: static;
+                margin-top: 20px;
+            }
         }
     </style>
 </head>
@@ -291,8 +295,8 @@
                 <div id="question-box">
                     <div id="question-number"></div>
                     <div id="question-text">Loading question...</div>
-                    <div id="time-counter">Time: 7</div>
                 </div>
+                <div id="time-counter">Time: 7</div>
                 <div id="options-area"></div>
                 <div id="feedback-message"></div>
                 <div id="score-container" class="hidden">
@@ -305,12 +309,6 @@
         <div id="right-pane">
             <div id="webcam-confidence-container">
                 <div id="webcam-container"></div>
-                <div id="confidence-container">
-                    <div id="confidence-A">A: 0.00%</div>
-                    <div id="confidence-B">B: 0.00%</div>
-                    <div id="confidence-C">C: 0.00%</div>
-                    <div id="confidence-D">D: 0.00%</div>
-                </div>
             </div>
             <div id="dashboard-container">
                 <h2>Score Dashboard</h2>
@@ -324,6 +322,12 @@
                     <tbody id="dashboard-body"></tbody>
                 </table>
                 <div id="total-score">Total: 0</div>
+            </div>
+            <div id="confidence-container">
+                <div id="confidence-A">A: 0.00%</div>
+                <div id="confidence-B">B: 0.00%</div>
+                <div id="confidence-C">C: 0.00%</div>
+                <div id="confidence-D">D: 0.00%</div>
             </div>
         </div>
     </div>
@@ -428,7 +432,7 @@
                 }
             }
 
-            // Update detected option border
+            // Update detected option background
             if (result.probability >= 0.8) {
                 if (lastDetectedOption && lastDetectedOption !== result.className) {
                     const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
