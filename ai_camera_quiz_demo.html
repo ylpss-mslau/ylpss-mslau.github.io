@@ -18,16 +18,18 @@
         }
         #main-container {
             display: flex;
+            flex-direction: column;
             width: 100%;
             height: 100%;
         }
         #quiz-container {
-            flex: 3;
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
             padding: 20px;
+            overflow-y: auto;
         }
         #home-container {
             display: flex;
@@ -40,12 +42,12 @@
             border-radius: 8px;
         }
         #home-container h1 {
-            font-size: 3rem; /* ~48px, readable at 1m */
+            font-size: 3.75rem; /* ~60px (48px * 1.25) */
             margin-bottom: 20px;
         }
         #start-button {
             padding: 15px 30px;
-            font-size: 1.5rem; /* ~24px */
+            font-size: 1.875rem; /* ~30px (24px * 1.25) */
             background-color: #007bff;
             color: white;
             border: none;
@@ -57,17 +59,17 @@
             background-color: #0056b3;
         }
         #dashboard-container {
-            flex: 1;
             background-color: #fff;
             padding: 20px;
-            border-left: 1px solid #ddd;
-            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
-            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
         }
         #webcam-container {
             position: absolute;
             top: 10px;
-            right: 250px; /* Shift left to avoid dashboard */
+            right: 10px;
             width: 200px;
             height: 200px;
             border: 2px solid #333;
@@ -80,22 +82,37 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
-            min-height: 80px;
-            width: 600px;
-            text-align: center;
+            width: 800px; /* Wider */
+            height: 120px; /* Taller */
+            position: relative;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
+        }
+        #question-number {
+            font-size: 2.5rem; /* ~40px (32px * 1.25) */
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
         }
         #question-text {
-            font-size: 1.75rem; /* ~28px, readable at 1m */
-            margin: 0;
+            font-size: 2.1875rem; /* ~35px (28px * 1.25) */
+            text-align: center;
+        }
+        #time-counter {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 1.875rem; /* ~30px (24px * 1.25) */
+            color: #721c24;
+            font-weight: bold;
         }
         #options-area {
             width: 400px;
             height: 400px;
             position: relative;
-            margin-top: 20px;
+            margin: 20px auto; /* Centered under question box */
         }
         .option-button {
             position: absolute;
@@ -105,16 +122,16 @@
             border: 1px solid #333;
             border-radius: 5px;
             cursor: default;
-            font-size: 1.25rem; /* ~20px, readable at 1m */
+            font-size: 1.5625rem; /* ~25px (20px * 1.25) */
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        #option-A { top: 0; left: 125px; background-color: #d1e7dd; } /* Light green */
-        #option-B { right: 0; top: 170px; background-color: #f8d7da; } /* Light red */
-        #option-C { bottom: 0; left: 125px; background-color: #cff4fc; } /* Light blue */
-        #option-D { left: 0; top: 170px; background-color: #fff3cd; } /* Light yellow */
+        #option-A { top: 0; left: 125px; background-color: #d1e7dd; }
+        #option-B { right: 0; top: 170px; background-color: #f8d7da; }
+        #option-C { bottom: 0; left: 125px; background-color: #cff4fc; }
+        #option-D { left: 0; top: 170px; background-color: #fff3cd; }
         .option-button.correct {
             background-color: #d4edda !important;
             color: #155724;
@@ -127,7 +144,7 @@
         }
         #feedback-message {
             margin-top: 15px;
-            font-size: 1.5rem; /* ~24px */
+            font-size: 1.875rem; /* ~30px (24px * 1.25) */
             font-weight: bold;
             min-height: 30px;
         }
@@ -135,13 +152,16 @@
         #feedback-message.wrong { color: red; }
         #score-container {
             margin-top: 20px;
-            font-size: 1.75rem;
+            font-size: 2.1875rem; /* ~35px (28px * 1.25) */
             font-weight: bold;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         #restart-button {
             padding: 12px 24px;
-            font-size: 1.25rem;
+            font-size: 1.5625rem; /* ~25px (20px * 1.25) */
             background: linear-gradient(45deg, #007bff, #00d4ff);
             color: white;
             border: none;
@@ -149,14 +169,16 @@
             cursor: pointer;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
         }
         #restart-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 8px rgba(0,0,0,0.2);
         }
         #dashboard-container h2 {
-            font-size: 1.5rem;
+            font-size: 1.875rem; /* ~30px (24px * 1.25) */
             margin-bottom: 15px;
+            text-align: center;
         }
         #dashboard-table {
             width: 100%;
@@ -166,15 +188,16 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
-            font-size: 1.25rem;
+            font-size: 1.5625rem; /* ~25px (20px * 1.25) */
         }
         #dashboard-table th {
             background-color: #f9f9f9;
         }
         #total-score {
             margin-top: 15px;
-            font-size: 1.5rem;
+            font-size: 1.875rem; /* ~30px (24px * 1.25) */
             font-weight: bold;
+            text-align: center;
         }
         .hidden { display: none !important; }
     </style>
@@ -188,7 +211,9 @@
             </div>
             <div id="game-container" class="hidden">
                 <div id="question-box">
+                    <div id="question-number"></div>
                     <div id="question-text">Loading question...</div>
+                    <div id="time-counter">-6</div>
                 </div>
                 <div id="options-area"></div>
                 <div id="feedback-message"></div>
@@ -226,13 +251,16 @@
         const WAIT_TIME = 200;
         let isIos = /iPhone|iPad/.test(window.navigator.userAgent);
         let answerConfirmed = false, confidenceStartTime = null;
-        let questionStartTime, optionsTimeout;
+        let questionStartTime, optionsTimeout, timerInterval;
         const scores = Array(questionsPerGame).fill(null);
 
         // DOM Elements
         const homeContainerElement = document.getElementById('home-container');
         const gameContainerElement = document.getElementById('game-container');
+        const questionBoxElement = document.getElementById('question-box');
+        const questionNumberElement = document.getElementById('question-number');
         const questionTextElement = document.getElementById('question-text');
+        const timeCounterElement = document.getElementById('time-counter');
         const optionsAreaElement = document.getElementById('options-area');
         const feedbackMessageElement = document.getElementById('feedback-message');
         const scoreContainerElement = document.getElementById('score-container');
@@ -344,6 +372,7 @@
             if (!(await initWebcam())) return;
             homeContainerElement.classList.add('hidden');
             gameContainerElement.classList.remove('hidden');
+            questionBoxElement.classList.remove('hidden');
             totalScore = 0;
             currentQuestionIndex = 0;
             selectedQuestions = [];
@@ -366,13 +395,25 @@
             }
         }
 
+        function startTimer() {
+            clearInterval(timerInterval);
+            let timeLeft = -6;
+            timeCounterElement.textContent = timeLeft;
+            timerInterval = setInterval(() => {
+                timeLeft++;
+                timeCounterElement.textContent = timeLeft;
+            }, 1000);
+        }
+
         function displayQuestion() {
             clearTimeout(optionsTimeout);
+            clearInterval(timerInterval);
             answerConfirmed = false;
             confidenceStartTime = null;
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
             optionsAreaElement.innerHTML = '';
+            optionsAreaElement.style.display = 'none';
 
             if (currentQuestionIndex >= selectedQuestions.length) {
                 endGame();
@@ -380,7 +421,9 @@
             }
 
             const currentQuestion = selectedQuestions[currentQuestionIndex];
-            questionTextElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}: ${currentQuestion.question}`;
+            questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}`;
+            questionTextElement.textContent = currentQuestion.question;
+            startTimer();
 
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
                 Object.entries(currentQuestion.options).forEach(([key, value]) => {
@@ -415,6 +458,7 @@
 
         function handleAnswer(selectedOption) {
             clearTimeout(optionsTimeout);
+            clearInterval(timerInterval);
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             const correctAnswerKey = currentQuestion.correct_answer;
             const selectedButton = optionsAreaElement.querySelector(`#option-${selectedOption}`);
@@ -455,7 +499,8 @@
         }
 
         function endGame() {
-            questionTextElement.classList.add('hidden');
+            clearInterval(timerInterval);
+            questionBoxElement.classList.add('hidden');
             optionsAreaElement.classList.add('hidden');
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
