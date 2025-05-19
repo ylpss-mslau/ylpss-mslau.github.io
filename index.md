@@ -3,7 +3,7 @@
 - [Demo AI camera test](ai_camera_demo.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/ai_camera_demo.html))
   - Capturing camera image
   - Using TensorFlow mode trained by Teachable Machine to get an result (A, B, C, or D)
-- [Demo online quiz](demo_quiz.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/demo_quiz.html))
+- [Demo online quiz](demo_quiz.html)
   - Showing the basic idea of the game without AI camera
   - It fetches question bank in JSON format via a URL.
   - It shows 10 random questions and the user can answer.
@@ -29,3 +29,4 @@
     - Context: Hong Kong
     - Purpose: Learning prepositions
     - Format: JSON with example provided
+- [Demo AI Camera + Online Quiz](ai_camera_quiz_demo.html)  ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/ai_camera_quiz_demo.html))
