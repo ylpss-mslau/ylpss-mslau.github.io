@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
     <style>
         body {
-            font-family: sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             background-color: #f4f4f4;
             color: #333;
@@ -26,8 +26,35 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 20px;
+        }
+        #home-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            background-color: #fff;
+            border-radius: 8px;
+        }
+        #home-container h1 {
+            font-size: 3rem; /* ~48px, readable at 1m */
+            margin-bottom: 20px;
+        }
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.5rem; /* ~24px */
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #0056b3;
         }
         #dashboard-container {
             flex: 1;
@@ -40,69 +67,95 @@
         #webcam-container {
             position: absolute;
             top: 10px;
-            right: 10px;
+            right: 250px; /* Shift left to avoid dashboard */
             width: 200px;
             height: 200px;
             border: 2px solid #333;
             border-radius: 8px;
+            z-index: 10;
+        }
+        #question-box {
+            background-color: #fff;
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            width: 600px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         #question-text {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            text-align: center;
-            min-height: 60px;
-            max-width: 600px;
+            font-size: 1.75rem; /* ~28px, readable at 1m */
+            margin: 0;
         }
-        #options-container {
-            position: relative;
+        #options-area {
             width: 400px;
             height: 400px;
-            display: none; /* Hidden until 1s after question */
+            position: relative;
+            margin-top: 20px;
         }
         .option-button {
             position: absolute;
             width: 150px;
             height: 60px;
             padding: 10px;
-            border: 1px solid #ddd;
+            border: 1px solid #333;
             border-radius: 5px;
-            background-color: #f9f9f9;
             cursor: default;
-            font-size: 1em;
+            font-size: 1.25rem; /* ~20px, readable at 1m */
             text-align: center;
-            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+        #option-A { top: 0; left: 125px; background-color: #d1e7dd; } /* Light green */
+        #option-B { right: 0; top: 170px; background-color: #f8d7da; } /* Light red */
+        #option-C { bottom: 0; left: 125px; background-color: #cff4fc; } /* Light blue */
+        #option-D { left: 0; top: 170px; background-color: #fff3cd; } /* Light yellow */
         .option-button.correct {
-            background-color: #d4edda;
+            background-color: #d4edda !important;
             color: #155724;
             border-color: #c3e6cb;
         }
         .option-button.wrong {
-            background-color: #f8d7da;
+            background-color: #f8d7da !important;
             color: #721c24;
             border-color: #f5c6cb;
         }
-        /* Diamond layout positions */
-        #option-A { top: 0; left: 125px; }
-        #option-B { right: 0; top: 170px; }
-        #option-C { bottom: 0; left: 125px; }
-        #option-D { left: 0; top: 170px; }
         #feedback-message {
             margin-top: 15px;
-            font-size: 1.1em;
+            font-size: 1.5rem; /* ~24px */
             font-weight: bold;
-            min-height: 25px;
+            min-height: 30px;
         }
         #feedback-message.correct { color: green; }
         #feedback-message.wrong { color: red; }
         #score-container {
             margin-top: 20px;
-            font-size: 1.5em;
+            font-size: 1.75rem;
             font-weight: bold;
             text-align: center;
         }
+        #restart-button {
+            padding: 12px 24px;
+            font-size: 1.25rem;
+            background: linear-gradient(45deg, #007bff, #00d4ff);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        #restart-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.2);
+        }
         #dashboard-container h2 {
-            font-size: 1.2em;
+            font-size: 1.5rem;
             margin-bottom: 15px;
         }
         #dashboard-table {
@@ -113,13 +166,14 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
+            font-size: 1.25rem;
         }
         #dashboard-table th {
             background-color: #f9f9f9;
         }
         #total-score {
             margin-top: 15px;
-            font-size: 1.1em;
+            font-size: 1.5rem;
             font-weight: bold;
         }
         .hidden { display: none !important; }
@@ -128,13 +182,21 @@
 <body>
     <div id="main-container">
         <div id="quiz-container">
-            <div id="question-text">Loading question...</div>
-            <div id="options-container"></div>
-            <div id="feedback-message"></div>
-            <div id="score-container" class="hidden">
-                <h2>Quiz Completed!</h2>
-                <p id="final-score"></p>
-                <button id="restart-button" onclick="restartGame()">Play Again?</button>
+            <div id="home-container">
+                <h1>Welcome to the Camera Quiz Game</h1>
+                <button id="start-button" onclick="startGame()">Start Game</button>
+            </div>
+            <div id="game-container" class="hidden">
+                <div id="question-box">
+                    <div id="question-text">Loading question...</div>
+                </div>
+                <div id="options-area"></div>
+                <div id="feedback-message"></div>
+                <div id="score-container" class="hidden">
+                    <h2>Quiz Completed!</h2>
+                    <p id="final-score"></p>
+                    <button id="restart-button">Play Again?</button>
+                </div>
             </div>
         </div>
         <div id="dashboard-container">
@@ -168,8 +230,10 @@
         const scores = Array(questionsPerGame).fill(null);
 
         // DOM Elements
+        const homeContainerElement = document.getElementById('home-container');
+        const gameContainerElement = document.getElementById('game-container');
         const questionTextElement = document.getElementById('question-text');
-        const optionsContainerElement = document.getElementById('options-container');
+        const optionsAreaElement = document.getElementById('options-area');
         const feedbackMessageElement = document.getElementById('feedback-message');
         const scoreContainerElement = document.getElementById('score-container');
         const finalScoreElement = document.getElementById('final-score');
@@ -263,7 +327,7 @@
                     questionTextElement.textContent = "No questions found.";
                     return;
                 }
-                startGame();
+                homeContainerElement.classList.remove('hidden');
             } catch (error) {
                 questionTextElement.textContent = `Error: ${error.message}.`;
             }
@@ -278,6 +342,8 @@
 
         async function startGame() {
             if (!(await initWebcam())) return;
+            homeContainerElement.classList.add('hidden');
+            gameContainerElement.classList.remove('hidden');
             totalScore = 0;
             currentQuestionIndex = 0;
             selectedQuestions = [];
@@ -287,7 +353,7 @@
             feedbackMessageElement.className = '';
             scoreContainerElement.classList.add('hidden');
             questionTextElement.classList.remove('hidden');
-            optionsContainerElement.classList.remove('hidden');
+            optionsAreaElement.classList.remove('hidden');
             scores.fill(null);
             updateDashboard();
 
@@ -306,7 +372,7 @@
             confidenceStartTime = null;
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
-            optionsContainerElement.style.display = 'none';
+            optionsAreaElement.innerHTML = '';
 
             if (currentQuestionIndex >= selectedQuestions.length) {
                 endGame();
@@ -315,7 +381,6 @@
 
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             questionTextElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}: ${currentQuestion.question}`;
-            optionsContainerElement.innerHTML = '';
 
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
                 Object.entries(currentQuestion.options).forEach(([key, value]) => {
@@ -324,7 +389,7 @@
                     button.id = `option-${key}`;
                     button.textContent = `${key}: ${value}`;
                     button.dataset.optionKey = key;
-                    optionsContainerElement.appendChild(button);
+                    optionsAreaElement.appendChild(button);
                 });
             } else {
                 questionTextElement.textContent = `Error: Question ${currentQuestionIndex + 1} has no options.`;
@@ -337,7 +402,7 @@
 
             questionStartTime = Date.now();
             setTimeout(() => {
-                optionsContainerElement.style.display = 'block';
+                optionsAreaElement.style.display = 'block';
                 optionsTimeout = setTimeout(() => {
                     if (!answerConfirmed) {
                         scores[currentQuestionIndex] = 0;
@@ -352,8 +417,8 @@
             clearTimeout(optionsTimeout);
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             const correctAnswerKey = currentQuestion.correct_answer;
-            const selectedButton = optionsContainerElement.querySelector(`#option-${selectedOption}`);
-            const correctButton = optionsContainerElement.querySelector(`#option-${correctAnswerKey}`);
+            const selectedButton = optionsAreaElement.querySelector(`#option-${selectedOption}`);
+            const correctButton = optionsAreaElement.querySelector(`#option-${correctAnswerKey}`);
 
             if (selectedOption === correctAnswerKey) {
                 scores[currentQuestionIndex] = 2;
@@ -391,7 +456,7 @@
 
         function endGame() {
             questionTextElement.classList.add('hidden');
-            optionsContainerElement.classList.add('hidden');
+            optionsAreaElement.classList.add('hidden');
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
             finalScoreElement.textContent = `Your final score is: ${totalScore}.`;
@@ -399,12 +464,7 @@
             restartButtonElement.style.display = 'block';
         }
 
-        function restartGame() {
-            scoreContainerElement.classList.add('hidden');
-            startGame();
-        }
-
-        // Start the game
+        // Start by fetching questions
         fetchQuestions();
     </script>
 </body>
