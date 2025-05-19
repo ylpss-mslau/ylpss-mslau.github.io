@@ -108,6 +108,7 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
+            gap: 1.5em; /* At least 1 line of spacing between question content and timer */
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 1s ease, transform 1s ease;
@@ -132,7 +133,7 @@
             font-weight: bold;
         }
         #options-area {
-            width: clamp(500px, 60vw, 600px); /* Widened to prevent overlap */
+            width: clamp(600px, 70vw, 700px); /* Widened to prevent overlap */
             height: clamp(300px, 40vh, 400px); /* Responsive height */
             position: relative;
             margin: 20px auto;
@@ -141,8 +142,8 @@
             position: absolute;
             width: clamp(140px, 20vw, 180px); /* Responsive width */
             height: clamp(60px, 10vh, 80px); /* Responsive height */
-            padding: 5px; /* Reduced padding from 10px */
-            border: 8px solid transparent; /* Halved from 16px */
+            padding: 5px; /* Reduced padding */
+            border: 4px solid transparent; /* Original thickness */
             border-radius: 8px;
             cursor: default;
             font-size: clamp(1.5rem, 2.5vw, 1.875rem); /* Responsive font size, ~30px max */
@@ -160,27 +161,28 @@
             animation: flashCyan 0.5s infinite alternate; /* Fast flashing cyan border */
         }
         @keyframes flashCyan {
-            0% { border: 8px solid #00ffff; } /* Cyan */
-            100% { border: 8px solid transparent; }
+            0% { border: 4px solid #00ffff; } /* Cyan */
+            100% { border: 4px solid transparent; }
         }
         .option-button.correct {
             background: linear-gradient(45deg, #d4edda, #c3e6cb) !important;
             color: #155724;
-            border: 8px solid green !important;
+            border: 4px solid green !important;
         }
         .option-button.wrong {
             background: linear-gradient(45deg, #f8d7da, #f5c6cb) !important;
             color: #721c24;
-            border: 8px solid red !important;
+            border: 4px solid red !important;
         }
         .option-button.highlighted-correct {
-            border: 8px solid #d4a017 !important;
+            border: 4px solid #d4a017 !important;
         }
         #feedback-message {
             margin-top: 15px;
-            font-size: clamp(1.5rem, 3vw, 1.875rem); /* Responsive font size, ~30px max */
+            font-size: clamp(2.5rem, 5vw, 3.75rem); /* Bigger font, ~60px max */
             font-weight: bold;
-            min-height: 30px;
+            min-height: 40px;
+            text-align: center; /* Centered */
         }
         #feedback-message.correct { color: green; }
         #feedback-message.wrong { color: red; }
