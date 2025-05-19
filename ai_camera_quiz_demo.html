@@ -132,7 +132,7 @@
             font-weight: bold;
         }
         #options-area {
-            width: clamp(400px, 50vw, 500px); /* Responsive width */
+            width: clamp(500px, 60vw, 600px); /* Widened to prevent overlap */
             height: clamp(300px, 40vh, 400px); /* Responsive height */
             position: relative;
             margin: 20px auto;
@@ -141,8 +141,8 @@
             position: absolute;
             width: clamp(140px, 20vw, 180px); /* Responsive width */
             height: clamp(60px, 10vh, 80px); /* Responsive height */
-            padding: 10px;
-            border: 16px solid transparent;
+            padding: 5px; /* Reduced padding from 10px */
+            border: 8px solid transparent; /* Halved from 16px */
             border-radius: 8px;
             cursor: default;
             font-size: clamp(1.5rem, 2.5vw, 1.875rem); /* Responsive font size, ~30px max */
@@ -157,20 +157,24 @@
         #option-C { top: 50%; right: 0; transform: translateY(-50%); background: linear-gradient(45deg, #ffd740, #ffeb3b); } /* Yellow gradient */
         #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #66bb6a, #81c784); } /* Green gradient */
         .option-button.detected {
-            border: 16px dashed #d4a017; /* Dashed border with darker yellow */
+            animation: flashCyan 0.5s infinite alternate; /* Fast flashing cyan border */
+        }
+        @keyframes flashCyan {
+            0% { border: 8px solid #00ffff; } /* Cyan */
+            100% { border: 8px solid transparent; }
         }
         .option-button.correct {
             background: linear-gradient(45deg, #d4edda, #c3e6cb) !important;
             color: #155724;
-            border: 16px solid green !important;
+            border: 8px solid green !important;
         }
         .option-button.wrong {
             background: linear-gradient(45deg, #f8d7da, #f5c6cb) !important;
             color: #721c24;
-            border: 16px solid red !important;
+            border: 8px solid red !important;
         }
         .option-button.highlighted-correct {
-            border: 16px solid #d4a017 !important;
+            border: 8px solid #d4a017 !important;
         }
         #feedback-message {
             margin-top: 15px;
@@ -359,6 +363,7 @@
             D: document.getElementById('confidence-D')
         };
         const blackoutElement = document.getElementById('blackout');
+        const webcamContainer = document.getElementById('webcam-container');
 
         // Webcam Initialization
         async function initWebcam() {
@@ -372,14 +377,16 @@
                 if (!(await checkCamera())) return false;
                 await webcam.setup();
                 if (isIos) {
-                    document.getElementById('webcam-container').appendChild(webcam.webcam);
+                    webcamContainer.innerHTML = ''; // Clear previous content
+                    webcamContainer.appendChild(webcam.webcam);
                     const webCamVideo = document.getElementsByTagName('video')[0];
                     webCamVideo.setAttribute("playsinline", true);
                     webCamVideo.muted = "true";
                     webCamVideo.style.width = '100%';
                     webCamVideo.style.height = '100%';
                 } else {
-                    document.getElementById('webcam-container').appendChild(webcam.canvas);
+                    webcamContainer.innerHTML = ''; // Clear previous content
+                    webcamContainer.appendChild(webcam.canvas);
                 }
                 labelContainer = document.getElementById('label-container');
                 for (let i = 0; i < maxPredictions; i++) {
@@ -651,6 +658,7 @@
         }
 
         function restartGame() {
+            webcamContainer.innerHTML = ''; // Remove previous canvas
             startGame();
             scoreContainerElement.classList.add('hidden');
         }
