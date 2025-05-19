@@ -142,10 +142,10 @@
             align-items: center;
             justify-content: center;
         }
-        #option-A { top: 50%; transform: translateY(-50%); left: 125px; background-color: #d1e7dd; }
-        #option-B { top: 25%; left: 0; background-color: #f8d7da; }
-        #option-C { top: 75%; right: 0; background-color: #cff4fc; }
-        #option-D { bottom: 50%; transform: translateY(50%); left: 125px; background-color: #fff3cd; }
+        #option-A { top: 0; left: 50%; transform: translateX(-50%); background-color: #d1e7dd; }
+        #option-B { top: 50%; left: 0; transform: translateY(-50%); background-color: #f8d7da; }
+        #option-C { top: 50%; right: 0; transform: translateY(-50%); background-color: #cff4fc; }
+        #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background-color: #fff3cd; }
         .option-button.correct {
             background-color: #d4edda !important;
             color: #155724;
@@ -227,7 +227,7 @@
                 <div id="question-box">
                     <div id="question-number"></div>
                     <div id="question-text">Loading question...</div>
-                    <div id="time-counter">Time: -6</div>
+                    <div id="time-counter">Time: 7</div>
                 </div>
                 <div id="options-area"></div>
                 <div id="feedback-message"></div>
@@ -360,7 +360,7 @@
             if (result.probability >= 0.8) {
                 if (!confidenceStartTime) {
                     confidenceStartTime = Date.now();
-                } else if (Date.now() - confidenceStartTime >= 1000) {
+                } else if (Date.now() - confidenceStartTime >= 3000) { // 3 seconds
                     answerConfirmed = true;
                     handleAnswer(result.className);
                 }
@@ -435,11 +435,24 @@
 
         function startTimer() {
             clearInterval(timerInterval);
-            let timeLeft = -6;
+            let timeLeft = 7;
             timeCounterElement.textContent = `Time: ${timeLeft}`;
+            let optionsShown = false;
             timerInterval = setInterval(() => {
-                timeLeft++;
+                timeLeft--;
                 timeCounterElement.textContent = `Time: ${timeLeft}`;
+                if (timeLeft === 6 && !optionsShown) {
+                    optionsAreaElement.style.display = 'block';
+                    optionsShown = true;
+                }
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (!answerConfirmed) {
+                        scores[currentQuestionIndex] = 0;
+                        updateDashboard();
+                        moveToNextQuestion();
+                    }
+                }
             }, 1000);
         }
 
@@ -482,20 +495,9 @@
             }
 
             questionStartTime = Date.now();
-            setTimeout(() => {
-                optionsAreaElement.style.display = 'block';
-                optionsTimeout = setTimeout(() => {
-                    if (!answerConfirmed) {
-                        scores[currentQuestionIndex] = 0;
-                        updateDashboard();
-                        moveToNextQuestion();
-                    }
-                }, 5000);
-            }, 1000);
         }
 
         function handleAnswer(selectedOption) {
-            clearTimeout(optionsTimeout);
             clearInterval(timerInterval);
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             const correctAnswerKey = currentQuestion.correct_answer;
