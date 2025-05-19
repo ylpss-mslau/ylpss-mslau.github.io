@@ -30,6 +30,7 @@
             justify-content: flex-start;
             padding: 20px;
             overflow-y: auto;
+            position: relative; /* For positioning footer */
         }
         #home-container {
             display: flex;
@@ -86,7 +87,7 @@
             background-color: #fff;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 30px 20px;
+            padding: 30px 20px 10px; /* Reduced bottom padding from 20px to 10px */
             margin-bottom: 20px;
             width: clamp(600px, 80vw, 800px); /* Responsive width */
             height: clamp(150px, 20vh, 180px); /* Taller question box */
@@ -304,6 +305,12 @@
                     <p id="final-score"></p>
                     <button id="restart-button" onclick="restartGame()">Play Again?</button>
                 </div>
+                <div id="confidence-container">
+                    <div id="confidence-A">A: 0.00%</div>
+                    <div id="confidence-B">B: 0.00%</div>
+                    <div id="confidence-C">C: 0.00%</div>
+                    <div id="confidence-D">D: 0.00%</div>
+                </div>
             </div>
         </div>
         <div id="right-pane">
@@ -322,12 +329,6 @@
                     <tbody id="dashboard-body"></tbody>
                 </table>
                 <div id="total-score">Total: 0</div>
-            </div>
-            <div id="confidence-container">
-                <div id="confidence-A">A: 0.00%</div>
-                <div id="confidence-B">B: 0.00%</div>
-                <div id="confidence-C">C: 0.00%</div>
-                <div id="confidence-D">D: 0.00%</div>
             </div>
         </div>
     </div>
@@ -441,20 +442,12 @@
                 const detectedButton = optionsAreaElement.querySelector(`#option-${result.className}`);
                 if (detectedButton) detectedButton.classList.add('detected');
                 lastDetectedOption = result.className;
-
-                if (!confidenceStartTime) {
-                    confidenceStartTime = Date.now();
-                } else if (Date.now() - confidenceStartTime >= 2000) {
-                    answerConfirmed = true;
-                    handleAnswer(result.className);
-                }
             } else {
                 if (lastDetectedOption) {
                     const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
                     if (lastButton) lastButton.classList.remove('detected');
                     lastDetectedOption = null;
                 }
-                confidenceStartTime = null;
             }
         }
 
@@ -541,9 +534,15 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     if (!answerConfirmed) {
-                        scores[currentQuestionIndex] = 0;
-                        updateDashboard();
-                        moveToNextQuestion();
+                        const detectedButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
+                        if (detectedButton && lastDetectedOption) {
+                            answerConfirmed = true;
+                            handleAnswer(lastDetectedOption);
+                        } else {
+                            scores[currentQuestionIndex] = 0;
+                            updateDashboard();
+                            moveToNextQuestion();
+                        }
                     }
                 }
             }, 1000);
