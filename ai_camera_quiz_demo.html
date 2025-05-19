@@ -307,7 +307,8 @@
                 <div id="feedback-message"></div>
                 <div id="score-container" class="hidden">
                     <h2>Quiz Completed!</h2>
-                    <p id="final-score"></p>
+                    <p id="final-score-label">Your final score is:</p>
+                    <p id="final-score-value"></p>
                     <button id="restart-button" onclick="restartGame()">Play Again?</button>
                 </div>
                 <div id="confidence-container">
@@ -364,7 +365,8 @@
         const optionsAreaElement = document.getElementById('options-area');
         const feedbackMessageElement = document.getElementById('feedback-message');
         const scoreContainerElement = document.getElementById('score-container');
-        const finalScoreElement = document.getElementById('final-score');
+        const finalScoreLabelElement = document.getElementById('final-score-label');
+        const finalScoreValueElement = document.getElementById('final-score-value');
         const dashboardBodyElement = document.getElementById('dashboard-body');
         const totalScoreElement = document.getElementById('total-score');
         const restartButtonElement = document.getElementById('restart-button');
@@ -651,9 +653,11 @@
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
             timeCounterElement.classList.add('hidden'); // Hide counter when quiz is complete
-            finalScoreElement.textContent = `Your final score is: ${totalScore}`; // Omit full stop
-            finalScoreElement.style.fontSize = 'clamp(3.5rem, 7vw, 5rem)'; // Much bigger font (~80px max)
-            finalScoreElement.style.marginTop = '20px'; // Move to next line
+            finalScoreLabelElement.textContent = 'Your final score is:'; // Smaller font text
+            finalScoreValueElement.textContent = totalScore; // Score on next line, bigger font
+            finalScoreLabelElement.style.fontSize = 'clamp(1.25rem, 3vw, 1.875rem)'; // Smaller font (~30px max)
+            finalScoreValueElement.style.fontSize = 'clamp(3.5rem, 7vw, 5rem)'; // Bigger font (~80px max)
+            finalScoreValueElement.style.marginTop = '20px'; // Move score to next line
             scoreContainerElement.classList.remove('hidden');
             setTimeout(() => {
                 scoreContainerElement.classList.add('visible');
@@ -669,9 +673,11 @@
         function restartGame() {
             webcamContainer.innerHTML = ''; // Remove previous canvas
             timeCounterElement.classList.remove('hidden'); // Show counter on restart
-            finalScoreElement.textContent = ''; // Clear final score
-            finalScoreElement.style.fontSize = ''; // Reset font size
-            finalScoreElement.style.marginTop = ''; // Reset margin
+            finalScoreLabelElement.textContent = '';
+            finalScoreValueElement.textContent = '';
+            finalScoreLabelElement.style.fontSize = '';
+            finalScoreValueElement.style.fontSize = '';
+            finalScoreValueElement.style.marginTop = '';
             startGame();
             scoreContainerElement.classList.add('hidden');
         }
