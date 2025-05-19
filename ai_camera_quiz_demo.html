@@ -45,17 +45,19 @@
             margin-bottom: 20px;
         }
         #start-button {
-            padding: 15px 30px;
-            font-size: 1.875rem; /* ~30px */
-            background-color: #007bff;
+            padding: 12px 24px;
+            font-size: 1.5625rem; /* ~25px */
+            background: linear-gradient(45deg, #007bff, #00d4ff);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
         #start-button:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.2);
         }
         #right-pane {
             flex: 1;
@@ -103,6 +105,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        #question-box.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         #question-number {
             font-size: 2.5rem; /* ~40px */
@@ -130,31 +139,38 @@
         }
         .option-button {
             position: absolute;
-            width: 150px;
-            height: 60px;
+            width: 180px; /* Increased from 150px */
+            height: 80px; /* Increased from 60px */
             padding: 10px;
-            border: 1px solid #333;
-            border-radius: 5px;
+            border: 4px solid transparent; /* Thicker transparent border */
+            border-radius: 8px; /* Slightly larger radius for larger box */
             cursor: default;
-            font-size: 1.5625rem; /* ~25px */
+            font-size: 1.875rem; /* ~30px, increased from ~25px */
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: border-color 0.3s ease;
         }
         #option-A { top: 0; left: 50%; transform: translateX(-50%); background-color: #d1e7dd; }
         #option-B { top: 50%; left: 0; transform: translateY(-50%); background-color: #f8d7da; }
         #option-C { top: 50%; right: 0; transform: translateY(-50%); background-color: #cff4fc; }
         #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background-color: #fff3cd; }
+        .option-button.detected {
+            border-color: yellow;
+        }
         .option-button.correct {
             background-color: #d4edda !important;
             color: #155724;
-            border-color: #c3e6cb;
+            border-color: green !important;
         }
         .option-button.wrong {
             background-color: #f8d7da !important;
             color: #721c24;
-            border-color: #f5c6cb;
+            border-color: red !important;
+        }
+        .option-button.highlighted-correct {
+            border-color: yellow !important;
         }
         #feedback-message {
             margin-top: 15px;
@@ -172,6 +188,13 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        #score-container.visible {
+            opacity: 1;
+            transform: scale(1);
         }
         #restart-button {
             padding: 12px 24px;
@@ -275,8 +298,9 @@
         const WAIT_TIME = 200;
         let isIos = /iPhone|iPad/.test(window.navigator.userAgent);
         let answerConfirmed = false, confidenceStartTime = null;
-        let questionStartTime, optionsTimeout, timerInterval;
+        let questionStartTime, timerInterval;
         const scores = Array(questionsPerGame).fill(null);
+        let lastDetectedOption = null;
 
         // DOM Elements
         const homeContainerElement = document.getElementById('home-container');
@@ -357,7 +381,17 @@
                     highest = prob;
                 }
             }
+
+            // Update detected option border
             if (result.probability >= 0.8) {
+                if (lastDetectedOption && lastDetectedOption !== result.className) {
+                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
+                    if (lastButton) lastButton.classList.remove('detected');
+                }
+                const detectedButton = optionsAreaElement.querySelector(`#option-${result.className}`);
+                if (detectedButton) detectedButton.classList.add('detected');
+                lastDetectedOption = result.className;
+
                 if (!confidenceStartTime) {
                     confidenceStartTime = Date.now();
                 } else if (Date.now() - confidenceStartTime >= 3000) { // 3 seconds
@@ -365,6 +399,11 @@
                     handleAnswer(result.className);
                 }
             } else {
+                if (lastDetectedOption) {
+                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
+                    if (lastButton) lastButton.classList.remove('detected');
+                    lastDetectedOption = null;
+                }
                 confidenceStartTime = null;
             }
         }
@@ -457,10 +496,10 @@
         }
 
         function displayQuestion() {
-            clearTimeout(optionsTimeout);
             clearInterval(timerInterval);
             answerConfirmed = false;
             confidenceStartTime = null;
+            lastDetectedOption = null;
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
             optionsAreaElement.innerHTML = '';
@@ -474,6 +513,10 @@
             const currentQuestion = selectedQuestions[currentQuestionIndex];
             questionNumberElement.textContent = `Question ${currentQuestionIndex + 1}/${selectedQuestions.length}`;
             questionTextElement.textContent = currentQuestion.question;
+            questionBoxElement.classList.remove('visible'); // Reset transition
+            setTimeout(() => {
+                questionBoxElement.classList.add('visible'); // Trigger transition
+            }, 10); // Small delay to ensure transition triggers
             startTimer();
 
             if (currentQuestion.options && typeof currentQuestion.options === 'object') {
@@ -516,11 +559,11 @@
                 feedbackMessageElement.textContent = 'Wrong!';
                 feedbackMessageElement.className = 'wrong';
                 if (selectedButton) selectedButton.classList.add('wrong');
-                if (correctButton) correctButton.classList.add('correct');
+                if (correctButton) correctButton.classList.add('highlighted-correct');
             }
 
             updateDashboard();
-            setTimeout(moveToNextQuestion, 1000);
+            setTimeout(moveToNextQuestion, 3500); // Increased from 1s to 3.5s
         }
 
         function moveToNextQuestion() {
@@ -546,6 +589,9 @@
             feedbackMessageElement.className = '';
             finalScoreElement.textContent = `Your final score is: ${totalScore}.`;
             scoreContainerElement.classList.remove('hidden');
+            setTimeout(() => {
+                scoreContainerElement.classList.add('visible'); // Trigger result transition
+            }, 10); // Small delay to ensure transition triggers
             restartButtonElement.style.display = 'block';
         }
 
