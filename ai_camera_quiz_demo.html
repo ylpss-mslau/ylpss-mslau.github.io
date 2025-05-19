@@ -69,6 +69,7 @@
             box-shadow: -2px 0 5px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            align-items: center; /* Center content */
             overflow-y: auto;
             min-width: 250px; /* Ensure right pane doesn't collapse too much */
         }
@@ -87,7 +88,7 @@
             background-color: #fff;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 30px 20px 10px; /* Reduced bottom padding from 20px to 10px */
+            padding: 30px 20px 5px; /* Further reduced bottom padding from 10px to 5px */
             margin-bottom: 20px;
             width: clamp(600px, 80vw, 800px); /* Responsive width */
             height: clamp(150px, 20vh, 180px); /* Taller question box */
@@ -139,18 +140,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, border 0.3s ease;
         }
         #option-A { top: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #ff6f61, #ff9f84); } /* Coral gradient */
         #option-B { top: 50%; left: 0; transform: translateY(-50%); background: linear-gradient(45deg, #40c4ff, #80deea); } /* Sky blue gradient */
         #option-C { top: 50%; right: 0; transform: translateY(-50%); background: linear-gradient(45deg, #ffd740, #ffeb3b); } /* Yellow gradient */
         #option-D { bottom: 0; left: 50%; transform: translateX(-50%); background: linear-gradient(45deg, #66bb6a, #81c784); } /* Green gradient */
         .option-button.detected {
-            animation: flashWhite 0.5s infinite alternate; /* Flash entire box with white background */
+            animation: flashDetected 0.3s infinite alternate; /* Faster flashing (0.3s) */
         }
-        @keyframes flashWhite {
-            0% { background-color: #ffffff; color: #333; } /* White background, readable text */
-            100% { background-color: transparent; color: #333; }
+        @keyframes flashDetected {
+            0% { background-color: #ffffff; border: 4px solid #800080; color: #333; } /* White background, purple border */
+            100% { background-color: transparent; border: 4px solid transparent; color: #333; }
         }
         .option-button.correct {
             background: linear-gradient(45deg, #d4edda, #c3e6cb) !important;
@@ -239,6 +240,10 @@
             bottom: 20px;
             left: 0;
             margin: 0;
+            background-color: #d3d3d3; /* Gray background */
+            color: #808080; /* Gray text */
+            padding: 10px 0;
+            border-radius: 8px;
         }
         #confidence-container div {
             margin: 0 5px;
@@ -297,7 +302,7 @@
                     <div id="question-number"></div>
                     <div id="question-text">Loading question...</div>
                 </div>
-                <div id="time-counter">Time: 7</div>
+                <div id="time-counter">Time: 5</div>
                 <div id="options-area"></div>
                 <div id="feedback-message"></div>
                 <div id="score-container" class="hidden">
@@ -344,7 +349,7 @@
         const questionsPerGame = 10;
         const WAIT_TIME = 200;
         let isIos = /iPhone|iPad/.test(window.navigator.userAgent);
-        let answerConfirmed = false, confidenceStartTime = null, classificationStarted = false;
+        let answerConfirmed = false, classificationStarted = false;
         let questionStartTime, timerInterval;
         const scores = Array(questionsPerGame).fill(null);
         let lastDetectedOption = null;
@@ -433,7 +438,7 @@
                 }
             }
 
-            // Update detected option background
+            // Update detected option background and border
             if (result.probability >= 0.8) {
                 if (lastDetectedOption && lastDetectedOption !== result.className) {
                     const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
@@ -494,7 +499,6 @@
             currentQuestionIndex = 0;
             selectedQuestions = [];
             answerConfirmed = false;
-            confidenceStartTime = null;
             classificationStarted = false;
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
@@ -518,20 +522,18 @@
 
         function startTimer() {
             clearInterval(timerInterval);
-            let timeLeft = 7;
+            let timeLeft = 5; // Start at 5
             timeCounterElement.textContent = `Time: ${timeLeft}`;
             let optionsShown = false;
             timerInterval = setInterval(() => {
                 timeLeft--;
                 timeCounterElement.textContent = `Time: ${timeLeft}`;
-                if (timeLeft === 6 && !optionsShown) {
+                if (timeLeft === 4 && !optionsShown) { // Show options at 4
                     optionsAreaElement.style.display = 'block';
+                    classificationStarted = true; // Start camera detection
                     optionsShown = true;
                 }
-                if (timeLeft === 5) {
-                    classificationStarted = true;
-                }
-                if (timeLeft <= 0) {
+                if (timeLeft <= 0) { // Confirm option at 0
                     clearInterval(timerInterval);
                     if (!answerConfirmed) {
                         const detectedButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
@@ -551,7 +553,6 @@
         function displayQuestion() {
             clearInterval(timerInterval);
             answerConfirmed = false;
-            confidenceStartTime = null;
             lastDetectedOption = null;
             classificationStarted = false;
             feedbackMessageElement.textContent = '';
