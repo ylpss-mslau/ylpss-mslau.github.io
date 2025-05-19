@@ -72,8 +72,17 @@
             height: 200px;
             border: 2px solid #333;
             border-radius: 8px;
+            margin-bottom: 10px;
+            align-self: flex-end;
+        }
+        #confidence-container {
+            width: 200px;
             margin-bottom: 20px;
-            align-self: flex-end; /* Align to right */
+            align-self: flex-end;
+            font-size: 1.25rem; /* ~20px, smaller for readability */
+        }
+        #confidence-container div {
+            margin-bottom: 5px;
         }
         #dashboard-container {
             flex: 1;
@@ -83,7 +92,7 @@
             background-color: #fff;
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 20px;
+            padding: 30px 20px; /* Increased top/bottom padding */
             margin-bottom: 20px;
             width: 800px;
             height: 120px;
@@ -216,7 +225,7 @@
                 <div id="question-box">
                     <div id="question-number"></div>
                     <div id="question-text">Loading question...</div>
-                    <div id="time-counter">-6</div>
+                    <div id="time-counter">Time: -6</div>
                 </div>
                 <div id="options-area"></div>
                 <div id="feedback-message"></div>
@@ -229,6 +238,12 @@
         </div>
         <div id="right-pane">
             <div id="webcam-container"></div>
+            <div id="confidence-container">
+                <div id="confidence-A">A: 0.00%</div>
+                <div id="confidence-B">B: 0.00%</div>
+                <div id="confidence-C">C: 0.00%</div>
+                <div id="confidence-D">D: 0.00%</div>
+            </div>
             <div id="dashboard-container">
                 <h2>Score Dashboard</h2>
                 <table id="dashboard-table">
@@ -273,6 +288,12 @@
         const dashboardBodyElement = document.getElementById('dashboard-body');
         const totalScoreElement = document.getElementById('total-score');
         const restartButtonElement = document.getElementById('restart-button');
+        const confidenceElements = {
+            A: document.getElementById('confidence-A'),
+            B: document.getElementById('confidence-B'),
+            C: document.getElementById('confidence-C'),
+            D: document.getElementById('confidence-D')
+        };
 
         // Webcam Initialization
         async function initWebcam() {
@@ -320,11 +341,16 @@
             const prediction = isIos ? await model.predict(webcam.webcam) : await model.predict(webcam.canvas);
             let highest = -1, result;
             for (let i = 0; i < maxPredictions; i++) {
-                const prob = prediction[i].probability.toFixed(2);
-                labelContainer.childNodes[i].innerHTML = `${prediction[i].className}: ${prob}`;
-                if (prediction[i].probability > highest) {
+                const prob = prediction[i].probability;
+                const probPercent = (prob * 100).toFixed(2);
+                const className = prediction[i].className;
+                labelContainer.childNodes[i].innerHTML = `${className}: ${probPercent}%`;
+                if (confidenceElements[className]) {
+                    confidenceElements[className].textContent = `${className}: ${probPercent}%`;
+                }
+                if (prob > highest) {
                     result = prediction[i];
-                    highest = prediction[i].probability;
+                    highest = prob;
                 }
             }
             if (result.probability >= 0.8) {
@@ -391,6 +417,9 @@
             scores.fill(null);
             updateDashboard();
 
+            // Reset confidence display
+            Object.values(confidenceElements).forEach(el => el.textContent = `${el.id.replace('confidence-', '')}: 0.00%`);
+
             shuffleArray(allQuestions);
             selectedQuestions = allQuestions.slice(0, Math.min(allQuestions.length, questionsPerGame));
             if (selectedQuestions.length > 0) {
@@ -403,10 +432,10 @@
         function startTimer() {
             clearInterval(timerInterval);
             let timeLeft = -6;
-            timeCounterElement.textContent = timeLeft;
+            timeCounterElement.textContent = `Time: ${timeLeft}`;
             timerInterval = setInterval(() => {
                 timeLeft++;
-                timeCounterElement.textContent = timeLeft;
+                timeCounterElement.textContent = `Time: ${timeLeft}`;
             }, 1000);
         }
 
