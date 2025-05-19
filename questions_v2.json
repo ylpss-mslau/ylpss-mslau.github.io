@@ -1,0 +1,913 @@
+[
+  {
+    "question": "I go to school ______ bus.",
+    "options": {
+      "A": "by",
+      "B": "on",
+      "C": "in",
+      "D": "to"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She lives ______ Kowloon.",
+    "options": {
+      "A": "at",
+      "B": "in",
+      "C": "on",
+      "D": "to"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The book is ______ the table.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "We meet ______ the park every Sunday.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "He arrived ______ 7 o'clock.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The cat is ______ the chair.",
+    "options": {
+      "A": "under",
+      "B": "on",
+      "C": "in",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I will see you ______ Monday.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The picture is ______ the wall.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "She is good ______ English.",
+    "options": {
+      "A": "in",
+      "B": "at",
+      "C": "on",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "We walked ______ the street.",
+    "options": {
+      "A": "along",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The shop is ______ the corner.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "CDRAM
+  },
+  {
+    "question": "I put my bag ______ the floor.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "They are waiting ______ the bus stop.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The dog ran ______ the park.",
+    "options": {
+      "A": "across",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "We have a holiday ______ December.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The keys are ______ the drawer.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "He sat ______ the sofa.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "I’ll meet you ______ the cinema.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The bird flew ______ the tree.",
+    "options": {
+      "A": "over",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She is ______ home now.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The ball rolled ______ the hill.",
+    "options": {
+      "A": "down",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We stayed ______ a hotel.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The clock is ______ the wall.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "I’m tired ______ studying.",
+    "options": {
+      "A": "of",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The shop closes ______ 9 p.m.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "She walked ______ the room.",
+    "options": {
+      "A": "into",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The car is parked ______ the house.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "D"
+  },
+  {
+    "question": "I’m interested ______ music.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The plane flies ______ the clouds.",
+    "options": {
+      "A": "above",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We sat ______ the campfire.",
+    "options": {
+      "A": "around",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The letter is ______ the envelope.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "He jumped ______ the pool.",
+    "options": {
+      "A": "into",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The party is ______ Saturday.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The pen is ______ the desk.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "She is afraid ______ spiders.",
+    "options": {
+      "A": "of",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We arrived ______ the airport early.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The bridge is ______ the river.",
+    "options": {
+      "A": "over",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I listened ______ the radio.",
+    "options": {
+      "A": "to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The shop is ______ my house.",
+    "options": {
+      "A": "near",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We climbed ______ the mountain.",
+    "options": {
+      "A": "up",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The cup is ______ the table.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "I’m excited ______ the trip.",
+    "options": {
+      "A": "about",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The movie starts ______ 8 p.m.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "She walked ______ the beach.",
+    "options": {
+      "A": "along",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The lamp is ______ the bed.",
+    "options": {
+      "A": "above",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We talked ______ the phone.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The ball is ______ the box.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’ll finish my homework ______ an hour.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The shop is ______ the street.",
+    "options": {
+      "A": "across",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She stood ______ the door.",
+    "options": {
+      "A": "by",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We live ______ Hong Kong.",
+    "options": {
+       "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The cat jumped ______ the table.",
+    "options": {
+      "A": "onto",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m looking forward ______ the weekend.",
+    "options": {
+      "A": "to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The book is ______ the shelf.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She smiled ______ me.",
+    "options": {
+      "A": "at",
+      "B": "in",
+      "C": "on",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The train arrives ______ 5 p.m.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The dog is ______ the garden.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m proud ______ my sister.",
+    "options": {
+      "A": "of",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The picture hangs ______ the fireplace.",
+    "options": {
+      "A": "above",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We ran ______ the rain.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The shop is open ______ 10 a.m.",
+    "options": {
+      "A": "from",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She walked ______ the stairs.",
+    "options": {
+      "A": "up",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The chair is ______ the table.",
+    "options": {
+      "A": "next to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m allergic ______ cats.",
+    "options": {
+      "A": "to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The meeting is ______ Tuesday.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "B"
+  },
+  {
+    "question": "The shoes are ______ the bed.",
+    "options": {
+      "A": "under",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We talked ______ dinner.",
+    "options": {
+      "A": "during",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The bus stopped ______ the station.",
+    "options": {
+      "A": "at",
+      "B": "in",
+      "C": "on",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m bad ______ drawing.",
+    "options": {
+      "A": "at",
+      "B": "in",
+      "C": "on",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The kite flew ______ the sky.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We sat ______ the grass.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The exam is ______ June.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The lamp is ______ the sofa.",
+    "options": {
+      "A": "behind",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m worried ______ the test.",
+    "options": {
+      "A": "about",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The plane landed ______ the runway.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We walked ______ the forest.",
+    "options": {
+      "A": "through",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The book belongs ______ me.",
+    "options": {
+      "A": "to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The car is ______ the garage.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m happy ______ my grades.",
+    "options": {
+      "A": "with",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The concert is ______ the evening.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The mirror is ______ the wall.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "She apologized ______ her mistake.",
+    "options": {
+      "A": "for",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The bus is ______ time.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The kids played ______ the playground.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m confused ______ the instructions.",
+    "options": {
+      "A": "about",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The boat sailed ______ the river.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "We agreed ______ the plan.",
+    "options": {
+      "A": "to",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The flowers are ______ the vase.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "I’m grateful ______ your help.",
+    "options": {
+      "A": "for",
+      "B": "in",
+      "C": "on",
+      "D": "at"
+    },
+    "correct_answer": "A"
+  },
+  {
+    "question": "The game starts ______ noon.",
+    "options": {
+      "A": "in",
+      "B": "on",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "C"
+  },
+  {
+    "question": "The poster is ______ the door.",
+    "options": {
+      "A": "on",
+      "B": "in",
+      "C": "at",
+      "D": "by"
+    },
+    "correct_answer": "A"
+  }
+]
