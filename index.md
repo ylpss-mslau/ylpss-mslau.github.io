@@ -1,6 +1,8 @@
 # AI Camera Quiz Demo
 
-- [Demo AI camera test](ai_camera_demo.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/ai_camera_demo.html))
+- AI Camera Testing
+  - [Demo AI camera test (Image)](ai_camera_image_demo.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/ai_camera_image_demo.html))
+  - [Demo AI camera test (Pose)](ai_camera_pose_demo.html) ([Source Code](https://github.com/ylpss-mslau/ylpss-mslau.github.io/blob/main/ai_camera_pose_demo.html))
   - Capturing camera image
   - Using TensorFlow mode trained by Teachable Machine to get an result (A, B, C, or D)
 - [Demo online quiz](demo_quiz.html)
