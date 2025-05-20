@@ -350,18 +350,19 @@
     <div id="label-container" style="display: none;"></div>
 
     <script>
-        const URL = 'https://teachablemachine.withgoogle.com/models/XzSEieaku/'; // Updated model URL
+        const URL = 'https://teachablemachine.withgoogle.com/models/XzSEieaku/';
         const jsonUrl = 'https://ylpss-mslau.github.io/questions_v1.json';
         let model, webcam, ctx, labelContainer, maxPredictions;
         let allQuestions = [], selectedQuestions = [];
         let currentQuestionIndex = 0, totalScore = 0;
         const questionsPerGame = 10;
-        const WAIT_TIME = 200;
         let isIos = /iPhone|iPad/.test(window.navigator.userAgent);
         let answerConfirmed = false, classificationStarted = false;
         let questionStartTime, timerInterval;
         const scores = Array(questionsPerGame).fill(null);
         let lastDetectedPose = null;
+        let loopInterval; // For controlling the loop
+        const DETECTION_INTERVAL = 100; // 100ms interval for 10 FPS
 
         // DOM Elements
         const homeContainerElement = document.getElementById('home-container');
@@ -402,7 +403,6 @@
                 webcam = new tmPose.Webcam(size, size, flip);
                 await webcam.setup();
                 await webcam.play();
-                window.requestAnimationFrame(loop);
 
                 canvas.width = size;
                 canvas.height = size;
@@ -411,6 +411,9 @@
                 for (let i = 0; i < maxPredictions; i++) {
                     labelContainer.appendChild(document.createElement('div'));
                 }
+
+                // Start the throttled loop
+                loopInterval = setInterval(loop, DETECTION_INTERVAL);
                 return true;
             } catch (e) {
                 alert("Failed to access webcam or load pose model: " + e.message);
@@ -418,11 +421,9 @@
             }
         }
 
-        async function loop(timestamp) {
-            await new Promise(r => setTimeout(r, WAIT_TIME));
+        async function loop() {
             webcam.update();
             if (classificationStarted) await predict();
-            window.requestAnimationFrame(loop);
         }
 
         async function predict() {
@@ -653,6 +654,7 @@
 
         function endGame() {
             clearInterval(timerInterval);
+            clearInterval(loopInterval); // Stop the pose detection loop
             questionBoxElement.classList.add('hidden');
             optionsAreaElement.classList.add('hidden');
             feedbackMessageElement.textContent = '';
