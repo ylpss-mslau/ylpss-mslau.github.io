@@ -228,14 +228,14 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
-            font-size: clamp(1.25rem, 2.5vw, 1.5625rem); /* Responsive font size, ~25px max */
+            font-size: clamp(0.875rem, 2vw, 1.125rem); /* Smaller font size, ~18px max */
         }
         #dashboard-table th {
             background-color: #f9f9f9;
         }
         #total-score {
             margin-top: 15px;
-            font-size: clamp(1.5rem, 3vw, 1.875rem); /* Responsive font size, ~30px max */
+            font-size: clamp(1rem, 2.5vw, 1.25rem); /* Smaller font size, ~20px max */
             font-weight: bold;
             text-align: center;
         }
@@ -350,7 +350,7 @@
     <div id="label-container" style="display: none;"></div>
 
     <script>
-        const URL = 'https://teachablemachine.withgoogle.com/models/4x3zZ5rG/'; // Sample pose model URL
+        const URL = 'https://teachablemachine.withgoogle.com/models/XzSEieaku/'; // Updated model URL
         const jsonUrl = 'https://ylpss-mslau.github.io/questions_v1.json';
         let model, webcam, ctx, labelContainer, maxPredictions;
         let allQuestions = [], selectedQuestions = [];
@@ -676,7 +676,7 @@
         }
 
         function restartGame() {
-            webcamContainer.innerHTML = '<canvas id="canvas"></canvas>'; // Reinitialize canvas
+            webcamContainer.innerHTML = '<canvas id="canvas"></canvas>';
             canvas = document.getElementById('canvas');
             timeCounterElement.classList.remove('hidden');
             finalScoreLabelElement.textContent = '';
