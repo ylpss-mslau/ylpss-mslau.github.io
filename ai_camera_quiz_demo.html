@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Camera Quiz Game</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.6.0/confetti.browser.min.js"></script>
     <style>
         body {
@@ -74,11 +74,19 @@
             min-width: 250px; /* Ensure right pane doesn't collapse too much */
         }
         #webcam-container {
-            width: clamp(150px, 20vw, 200px); /* Responsive webcam size */
-            height: clamp(150px, 20vw, 200px);
+            width: clamp(200px, 20vw, 300px); /* Adjusted for pose detection */
+            height: clamp(200px, 20vw, 300px);
             border: 2px solid #333;
             border-radius: 8px;
             margin-bottom: 20px;
+            position: relative; /* For canvas overlay */
+        }
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
         #dashboard-container {
             flex: 1;
@@ -320,8 +328,8 @@
             </div>
         </div>
         <div id="right-pane">
-            <div id="webcam-confidence-container">
-                <div id="webcam-container"></div>
+            <div id="webcam-container">
+                <canvas id="canvas"></canvas>
             </div>
             <div id="dashboard-container">
                 <h2>Score Dashboard</h2>
@@ -342,9 +350,9 @@
     <div id="label-container" style="display: none;"></div>
 
     <script>
-        const URL = 'https://teachablemachine.withgoogle.com/models/XzSEieaku/';
+        const URL = 'https://teachablemachine.withgoogle.com/models/4x3zZ5rG/'; // Sample pose model URL
         const jsonUrl = 'https://ylpss-mslau.github.io/questions_v1.json';
-        let model, webcam, labelContainer, maxPredictions;
+        let model, webcam, ctx, labelContainer, maxPredictions;
         let allQuestions = [], selectedQuestions = [];
         let currentQuestionIndex = 0, totalScore = 0;
         const questionsPerGame = 10;
@@ -353,7 +361,7 @@
         let answerConfirmed = false, classificationStarted = false;
         let questionStartTime, timerInterval;
         const scores = Array(questionsPerGame).fill(null);
-        let lastDetectedOption = null;
+        let lastDetectedPose = null;
 
         // DOM Elements
         const homeContainerElement = document.getElementById('home-container');
@@ -378,44 +386,39 @@
         };
         const blackoutElement = document.getElementById('blackout');
         const webcamContainer = document.getElementById('webcam-container');
+        const canvas = document.getElementById('canvas');
 
-        // Webcam Initialization
+        // Webcam and Pose Initialization
         async function initWebcam() {
             const modelURL = URL + 'model.json';
             const metadataURL = URL + 'metadata.json';
+
             try {
-                model = await tmImage.load(modelURL, metadataURL);
+                model = await tmPose.load(modelURL, metadataURL);
                 maxPredictions = model.getTotalClasses();
+
+                const size = 200;
                 const flip = true;
-                webcam = new tmImage.Webcam(200, 200, flip);
-                if (!(await checkCamera())) return false;
+                webcam = new tmPose.Webcam(size, size, flip);
                 await webcam.setup();
-                if (isIos) {
-                    webcamContainer.innerHTML = ''; // Clear previous content
-                    webcamContainer.appendChild(webcam.webcam);
-                    const webCamVideo = document.getElementsByTagName('video')[0];
-                    webCamVideo.setAttribute("playsinline", true);
-                    webCamVideo.muted = "true";
-                    webCamVideo.style.width = '100%';
-                    webCamVideo.style.height = '100%';
-                } else {
-                    webcamContainer.innerHTML = ''; // Clear previous content
-                    webcamContainer.appendChild(webcam.canvas);
-                }
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+
+                canvas.width = size;
+                canvas.height = size;
+                ctx = canvas.getContext('2d');
                 labelContainer = document.getElementById('label-container');
                 for (let i = 0; i < maxPredictions; i++) {
                     labelContainer.appendChild(document.createElement('div'));
                 }
-                webcam.play();
-                window.requestAnimationFrame(loop);
                 return true;
             } catch (e) {
-                alert("Failed to access webcam: " + e.message);
+                alert("Failed to access webcam or load pose model: " + e.message);
                 return false;
             }
         }
 
-        async function loop() {
+        async function loop(timestamp) {
             await new Promise(r => setTimeout(r, WAIT_TIME));
             webcam.update();
             if (classificationStarted) await predict();
@@ -424,7 +427,9 @@
 
         async function predict() {
             if (answerConfirmed || currentQuestionIndex >= selectedQuestions.length) return;
-            const prediction = isIos ? await model.predict(webcam.webcam) : await model.predict(webcam.canvas);
+            const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
+            const prediction = await model.predict(posenetOutput);
+
             let highest = -1, result;
             for (let i = 0; i < maxPredictions; i++) {
                 const prob = prediction[i].probability;
@@ -440,32 +445,34 @@
                 }
             }
 
-            // Update detected option background and border
             if (result.probability >= 0.8) {
-                if (lastDetectedOption && lastDetectedOption !== result.className) {
-                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
+                if (lastDetectedPose && lastDetectedPose !== result.className) {
+                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedPose}`);
                     if (lastButton) lastButton.classList.remove('detected');
                 }
                 const detectedButton = optionsAreaElement.querySelector(`#option-${result.className}`);
                 if (detectedButton) detectedButton.classList.add('detected');
-                lastDetectedOption = result.className;
+                lastDetectedPose = result.className;
             } else {
-                if (lastDetectedOption) {
-                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
+                if (lastDetectedPose) {
+                    const lastButton = optionsAreaElement.querySelector(`#option-${lastDetectedPose}`);
                     if (lastButton) lastButton.classList.remove('detected');
-                    lastDetectedOption = null;
+                    lastDetectedPose = null;
                 }
             }
+
+            drawPose(pose);
         }
 
-        async function checkCamera() {
-            const devices = await navigator.mediaDevices.enumerateDevices();
-            const videoDevices = devices.filter(device => device.kind === 'videoinput');
-            if (videoDevices.length === 0) {
-                alert("No camera detected.");
-                return false;
+        function drawPose(pose) {
+            if (webcam.canvas) {
+                ctx.drawImage(webcam.canvas, 0, 0);
+                if (pose) {
+                    const minPartConfidence = 0.5;
+                    tmPose.drawKeypoints(pose.keypoints, minPartConfidence, ctx);
+                    tmPose.drawSkeleton(pose.keypoints, minPartConfidence, ctx);
+                }
             }
-            return true;
         }
 
         // Quiz Logic
@@ -510,7 +517,6 @@
             scores.fill(null);
             updateDashboard();
 
-            // Reset confidence display
             Object.values(confidenceElements).forEach(el => el.textContent = `${el.id.replace('confidence-', '')}: 0.00%`);
 
             shuffleArray(allQuestions);
@@ -538,10 +544,10 @@
                 if (timeLeft <= 0) {
                     clearInterval(timerInterval);
                     if (!answerConfirmed) {
-                        const detectedButton = optionsAreaElement.querySelector(`#option-${lastDetectedOption}`);
-                        if (detectedButton && lastDetectedOption) {
+                        const detectedButton = optionsAreaElement.querySelector(`#option-${lastDetectedPose}`);
+                        if (detectedButton && lastDetectedPose) {
                             answerConfirmed = true;
-                            handleAnswer(lastDetectedOption);
+                            handleAnswer(lastDetectedPose);
                         } else {
                             scores[currentQuestionIndex] = 0;
                             updateDashboard();
@@ -555,7 +561,7 @@
         function displayQuestion() {
             clearInterval(timerInterval);
             answerConfirmed = false;
-            lastDetectedOption = null;
+            lastDetectedPose = null;
             classificationStarted = false;
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
@@ -567,7 +573,6 @@
                 return;
             }
 
-            // Blackout transition
             blackoutElement.classList.remove('hidden', 'fade-out');
             setTimeout(() => {
                 blackoutElement.classList.add('fade-out');
@@ -587,7 +592,7 @@
                             const button = document.createElement('div');
                             button.className = 'option-button';
                             button.id = `option-${key}`;
-                            button.textContent = value; // Only show the option content
+                            button.textContent = value;
                             button.dataset.optionKey = key;
                             optionsAreaElement.appendChild(button);
                         });
@@ -652,12 +657,12 @@
             optionsAreaElement.classList.add('hidden');
             feedbackMessageElement.textContent = '';
             feedbackMessageElement.className = '';
-            timeCounterElement.classList.add('hidden'); // Hide counter when quiz is complete
-            finalScoreLabelElement.textContent = 'Your final score is:'; // Smaller font text
-            finalScoreValueElement.textContent = totalScore; // Score on next line, bigger font
-            finalScoreLabelElement.style.fontSize = 'clamp(1.25rem, 3vw, 1.875rem)'; // Smaller font (~30px max)
-            finalScoreValueElement.style.fontSize = 'clamp(3.5rem, 7vw, 5rem)'; // Bigger font (~80px max)
-            finalScoreValueElement.style.marginTop = '20px'; // Move score to next line
+            timeCounterElement.classList.add('hidden');
+            finalScoreLabelElement.textContent = 'Your final score is:';
+            finalScoreValueElement.textContent = totalScore;
+            finalScoreLabelElement.style.fontSize = 'clamp(1.25rem, 3vw, 1.875rem)';
+            finalScoreValueElement.style.fontSize = 'clamp(3.5rem, 7vw, 5rem)';
+            finalScoreValueElement.style.marginTop = '20px';
             scoreContainerElement.classList.remove('hidden');
             setTimeout(() => {
                 scoreContainerElement.classList.add('visible');
@@ -671,8 +676,9 @@
         }
 
         function restartGame() {
-            webcamContainer.innerHTML = ''; // Remove previous canvas
-            timeCounterElement.classList.remove('hidden'); // Show counter on restart
+            webcamContainer.innerHTML = '<canvas id="canvas"></canvas>'; // Reinitialize canvas
+            canvas = document.getElementById('canvas');
+            timeCounterElement.classList.remove('hidden');
             finalScoreLabelElement.textContent = '';
             finalScoreValueElement.textContent = '';
             finalScoreLabelElement.style.fontSize = '';
